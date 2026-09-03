@@ -1,0 +1,515 @@
+/* ============================================================
+   Record Detail Styles
+   ============================================================ */
+
+.record-detail-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 22, 0.75);
+  backdrop-filter: blur(12px);
+  z-index: var(--z-modal-backdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s var(--ease-out);
+  padding: var(--space-lg);
+}
+
+.record-detail-modal {
+  background: var(--surface);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: scaleIn 0.3s var(--ease-out);
+  box-shadow: var(--shadow-xl);
+}
+
+.record-detail-hero {
+  padding: var(--space-2xl) var(--space-2xl) var(--space-lg);
+  position: relative;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  overflow: hidden;
+}
+
+.record-detail-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background: radial-gradient(circle at 80% 30%, var(--turmeric), transparent 60%),
+              radial-gradient(circle at 20% 70%, var(--terracotta), transparent 60%);
+}
+
+.record-detail-hero .close-btn {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 36px;
+  height: 36px;
+  background: rgba(19, 27, 46, 0.85);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  z-index: 5;
+}
+
+.record-detail-hero .close-btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.record-detail-badges {
+  display: flex;
+  gap: 6px;
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+
+.record-detail-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--slate);
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.record-detail-native {
+  font-size: 1.2rem;
+  color: var(--terracotta);
+  font-weight: 500;
+  margin-bottom: var(--space-md);
+  position: relative;
+  z-index: 2;
+}
+
+.record-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  position: relative;
+  z-index: 2;
+}
+
+.record-detail-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.record-detail-body {
+  padding: 0 var(--space-2xl) var(--space-2xl);
+}
+
+/* Audio Player */
+.audio-player-section {
+  background: linear-gradient(135deg, var(--indigo-deep), #1a2332);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  color: var(--ivory);
+}
+
+.audio-player-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.audio-player-header h4 {
+  color: var(--ivory);
+  font-size: 0.95rem;
+}
+
+.audio-waveform {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 48px;
+  margin-bottom: var(--space-md);
+}
+
+.audio-waveform .wave-bar {
+  flex: 1;
+  background: var(--terracotta);
+  border-radius: 2px;
+  min-width: 3px;
+  transition: height 0.1s ease;
+  opacity: 0.7;
+}
+
+.audio-waveform .wave-bar.active {
+  opacity: 1;
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.play-btn {
+  width: 44px;
+  height: 44px;
+  background: var(--terracotta);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(180, 85, 44, 0.5);
+}
+
+.audio-time {
+  font-size: 0.8rem;
+  color: rgba(248, 245, 238, 0.6);
+  font-family: monospace;
+}
+
+/* Transcript */
+.transcript-section {
+  margin-bottom: var(--space-xl);
+}
+
+.transcript-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: var(--space-md);
+}
+
+.transcript-tab {
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--ivory-warm);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+  transition: all var(--duration-fast);
+}
+
+.transcript-tab.active {
+  background: var(--terracotta);
+  color: white;
+  border-color: var(--terracotta);
+}
+
+.transcript-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.transcript-content.original {
+  border-left: 3px solid var(--terracotta);
+}
+
+.transcript-content.english {
+  border-left: 3px solid var(--indigo);
+}
+
+/* Provenance */
+.provenance-section {
+  margin-bottom: var(--space-xl);
+}
+
+.provenance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-md);
+}
+
+.provenance-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.provenance-item .label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.provenance-item .value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Claims */
+.claims-section {
+  margin-bottom: var(--space-xl);
+}
+
+.claim-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.claim-status-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.claim-status-icon.supported { background: rgba(107, 127, 94, 0.15); }
+.claim-status-icon.oral_tradition { background: rgba(217, 164, 65, 0.15); }
+.claim-status-icon.unverified { background: rgba(138, 132, 128, 0.15); }
+.claim-status-icon.conflicting { background: rgba(140, 59, 59, 0.15); }
+
+.claim-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* Description */
+.full-description {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.section-label {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--slate);
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Lifecycle & Provenance Timeline */
+.lifecycle-timeline-box {
+  background: var(--ivory-warm);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.timeline-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: var(--space-sm);
+}
+
+.lifecycle-status-pill {
+  font-size: 0.76rem;
+  padding: 4px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-round);
+  color: var(--text-secondary);
+}
+
+.lifecycle-status-pill strong {
+  color: var(--terracotta);
+}
+
+.provenance-stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: var(--space-md);
+  overflow-x: auto;
+  padding: 4px 0 10px;
+}
+
+.stepper-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  min-width: 90px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.stepper-node .node-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  background: var(--bg-card);
+  border: 2px solid var(--border-medium);
+  transition: all var(--duration-fast);
+  z-index: 2;
+}
+
+.stepper-node.completed .node-marker {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: white;
+}
+
+.stepper-node.current .node-marker {
+  background: var(--terracotta);
+  border-color: var(--terracotta);
+  color: white;
+  box-shadow: 0 0 10px rgba(180, 85, 44, 0.4);
+}
+
+.stepper-node .node-current-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  animation: pulse 1.5s infinite ease-out;
+}
+
+.stepper-node .node-pending-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-medium);
+}
+
+.stepper-node .node-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.stepper-node.completed .node-label {
+  color: var(--slate);
+}
+
+.stepper-node.current .node-label,
+.stepper-node.selected .node-label {
+  color: var(--terracotta);
+}
+
+.stepper-line {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--border-light);
+  z-index: 1;
+}
+
+.stepper-line.line-active {
+  background: var(--sage);
+}
+
+.timeline-detail-drawer {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-top: 8px;
+  margin-bottom: var(--space-md);
+  box-shadow: var(--shadow-sm);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.drawer-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.78rem;
+}
+
+.drawer-stage-badge {
+  color: var(--terracotta);
+}
+
+.drawer-actor-date {
+  color: var(--text-muted);
+}
+
+.drawer-description {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ethical-governance-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(43, 58, 85, 0.06);
+  border: 1px solid rgba(43, 58, 85, 0.15);
+  border-radius: var(--radius-md);
+}
+
+@media (max-width: 768px) {
+  .record-detail-modal {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .record-detail-hero {
+    padding: var(--space-lg);
+  }
+
+  .record-detail-body {
+    padding: 0 var(--space-lg) var(--space-lg);
+  }
+
+  .provenance-grid {
+    grid-template-columns: 1fr;
+  }
+}

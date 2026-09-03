@@ -1,0 +1,212 @@
+[
+  {
+    "id": "ICH001",
+    "title": "Dashavatar — Maharashtra and Goa",
+    "category": "Performing Arts / Folk Theatre",
+    "state": ["Maharashtra", "Goa"],
+    "district": ["Sindhudurg", "Ratnagiri", "North Goa", "South Goa"],
+    "language": ["Marathi", "Konkani"],
+    "description": "Dashavatar is a traditional folk theatre form practiced in the Konkan and coastal regions of Maharashtra (Sindhudurg, Ratnagiri) and Goa. It dramatizes the ten incarnations of Lord Vishnu (Matsya, Kurma, Varaha, Narasimha, Vamana, Parashurama, Rama, Krishna, Buddha, and Kalki). The performance begins with ritual prayers to Lord Ganesha and Saraswati, followed by mythological enactments featuring rhythmic dancing, stylized dialogues, vibrant facial makeup, wooden masks, and percussion accompaniment on the pakhawaj and harmonium.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 16.12,
+      "lng": 73.55
+    },
+    "tags": ["Dashavatar", "Folk Theatre", "Konkan", "Vishnu Incarnations", "Maharashtra", "Goa", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH002",
+    "title": "Kalbelia — Rajasthan",
+    "category": "Performing Arts / Music & Dance",
+    "state": ["Rajasthan"],
+    "district": ["Jodhpur", "Jaisalmer", "Barmer", "Pali"],
+    "language": ["Marwari", "Rajasthani", "Hindi"],
+    "description": "Kalbelia is an expressive folk song and dance tradition of the Kalbelia community (historically nomadic snake charmers) of Rajasthan. Women dancers wear flowing black skirts (lehengas) with heavy embroidery and glass beads that swirl gracefully, mimicking the serpentine movements of a cobra. Male musicians accompany the performance with the poongi (woodwind instrument), dafli, khanjari, and dholak. The songs pass down oral history, desert lore, and spontaneous poetic compositions.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 26.29,
+      "lng": 73.02
+    },
+    "tags": ["Kalbelia", "Snake Charmer Dance", "Poongi", "Rajasthan", "Desert Folklore", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH003",
+    "title": "Chhau Dance",
+    "category": "Performing Arts / Martial Dance",
+    "state": ["West Bengal", "Jharkhand", "Odisha"],
+    "district": ["Purulia", "Seraikela Kharsawan", "Mayurbhanj"],
+    "language": ["Bengali", "Odia", "Kudmali", "Hindi"],
+    "description": "Chhau is a major semi-classical martial dance tradition of eastern India, comprising three distinct regional styles: Purulia Chhau of West Bengal (famous for massive painted clay masks), Seraikela Chhau of Jharkhand (delicate symbolic masks), and Mayurbhanj Chhau of Odisha (performed without masks). It draws themes from the Mahabharata, Ramayana, Puranas, and tribal folklore, featuring high leaps, somersaults, martial combat postures, and thunderous drumming on the dhol and dhamsa.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 23.33,
+      "lng": 86.36
+    },
+    "tags": ["Chhau Dance", "Masked Dance", "Purulia", "Seraikela", "Mayurbhanj", "Martial Arts", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH004",
+    "title": "Kolam — Tamil Nadu",
+    "category": "Visual Arts & Sacred Traditions",
+    "state": ["Tamil Nadu"],
+    "district": ["Chennai", "Madurai", "Thanjavur", "Tiruchirappalli", "Coimbatore"],
+    "language": ["Tamil"],
+    "description": "Kolam is a geometrical line drawing composed of curved loops drawn around a grid of dots (pulli), drawn using rice flour on the thresholds and courtyards of homes in Tamil Nadu and South India. Practiced daily at dawn by women, Kolam symbolizes welcoming prosperity (Lakshmi), cosmic harmony, and feeding small creatures. During the Tamil month of Margazhi and the Pongal harvest festival, complex colored Kolams adorn streets in a celebration of community mathematics and living sacred art.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 10.78,
+      "lng": 79.13
+    },
+    "tags": ["Kolam", "Threshold Art", "Rice Flour", "Margazhi", "Sacred Geometry", "Tamil Nadu", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH005",
+    "title": "Mudiyettu — Kerala",
+    "category": "Performing Arts / Sacred Ritual Theatre",
+    "state": ["Kerala"],
+    "district": ["Ernakulam", "Thrissur", "Kottayam", "Idukki"],
+    "language": ["Malayalam"],
+    "description": "Mudiyettu is a sacred ritual theatre and dance drama enacted in Kali temples (Bhagavati Kavu) across central Kerala. It enacts the mythological battle between the goddess Kali and the demon king Darika. The ritual begins with Kalamezhuthu (drawing a multi-colored ground mural of Kali using natural organic powders), followed by invocatory songs (Kalam Pattu) and a high-energy theatrical performance with intricate headdresses (mudi), facial paintings, torchlit entrances, and ritual drumming on the chenda and ilathalam.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 10.02,
+      "lng": 76.32
+    },
+    "tags": ["Mudiyettu", "Kali Ritual", "Kalamezhuthu", "Chenda", "Sacred Theatre", "Kerala", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH006",
+    "title": "Patola — Gujarat",
+    "category": "Traditional Craftsmanship / Weaving",
+    "state": ["Gujarat"],
+    "district": ["Patan"],
+    "language": ["Gujarati"],
+    "description": "Patan Patola is a double-ikat silk textile weaving art practiced by the Salvi artisan community in Patan, northern Gujarat. In double ikat, both the warp and weft yarns are meticulously tie-dyed with natural colors before weaving so that geometric and pictorial patterns (elephants, parrots, dancing figures, floral motifs) emerge with absolute precision on both sides of the fabric. The process requires months of mathematical calculation, manual alignment on custom handlooms, and has been practiced for centuries since the Solanki era.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 23.85,
+      "lng": 72.12
+    },
+    "tags": ["Patola", "Double Ikat", "Patan", "Salvi Weavers", "Silk Heritage", "Gujarat", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH007",
+    "title": "Phad — Rajasthan",
+    "category": "Visual Arts & Oral Storytelling",
+    "state": ["Rajasthan"],
+    "district": ["Bhilwara", "Shahpura", "Chittorgarh"],
+    "language": ["Mewari", "Rajasthani", "Hindi"],
+    "description": "Phad is an indigenous scroll painting and portable temple narrative tradition from Rajasthan (primarily Bhilwara and Shahpura). Created by the Joshi community of Chitrakars on long handwoven canvas scrolls using natural mineral pigments, Phad scrolls depict the epic tales of local folk deities like Pabuji and Devnarayan. The scrolls serve as backdrop for nighttime musical-ballad performances by Bhopa (priest-singer) and Bhopi (singer-wife), who narrate episodes using the ravanahatha string instrument and a brass lamp.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 25.35,
+      "lng": 74.63
+    },
+    "tags": ["Phad Painting", "Pabuji Ki Phad", "Bhopa", "Ravanahatha", "Scroll Narrative", "Rajasthan", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH008",
+    "title": "Rathwa ni Gher — Gujarat",
+    "category": "Performing Arts / Indigenous Ritual Dance",
+    "state": ["Gujarat"],
+    "district": ["Chhota Udaipur", "Vadodara", "Panchmahal"],
+    "language": ["Rathwi", "Gujarati"],
+    "description": "Rathwa ni Gher is a vibrant tribal dance performed by the Rathwa Adivasi community of Chhota Udaipur in eastern Gujarat during the spring festival of Holi (Kavant Mela). Male dancers (Gheraiyas) wear ornate peacock feather headdresses, strings of brass bells around their waists that jingle in unison, and elaborate body painting. The dance moves in circular formations to the rhythmic beats of tribal dhol drums, thalis, and shehnai, invoking divine ancestral blessings and agricultural fertility.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 22.30,
+      "lng": 74.01
+    },
+    "tags": ["Rathwa ni Gher", "Tribal Dance", "Adivasi Lore", "Chhota Udaipur", "Kavant Mela", "Gujarat", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH009",
+    "title": "Thatheras of Jandiala Guru — Punjab",
+    "category": "Traditional Craftsmanship / Metalworking",
+    "state": ["Punjab"],
+    "district": ["Amritsar"],
+    "language": ["Punjabi"],
+    "description": "The Thatheras of Jandiala Guru in Amritsar district, Punjab, represent an ancient oral-craft tradition of manufacturing brass and copper utensils using manual beating and tempering techniques. Established during the reign of Maharaja Ranjit Singh in the 19th century, artisans heat metal ingots on small wood-fired pits, hammer sheets into curved contours, and polish the surface with acid and tamarind juice, finishing each piece with delicate hammered indentations (chitai) renowned for Ayurvedic health benefits.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 31.56,
+      "lng": 75.02
+    },
+    "tags": ["Thatheras", "Brass and Copper", "Jandiala Guru", "Traditional Metallurgy", "Punjab", "IGNCA Inventory"]
+  },
+  {
+    "id": "ICH010",
+    "title": "Qawwali",
+    "category": "Performing Arts / Devotional Music",
+    "state": ["Delhi", "Uttar Pradesh", "Rajasthan", "Punjab"],
+    "district": ["New Delhi", "Agra", "Ajmer", "Lucknow"],
+    "language": ["Urdu", "Hindi", "Farsi", "Punjabi", "Braj Bhasha"],
+    "description": "Qawwali is a profound Sufi devotional musical tradition rooted in the Indian subcontinent since the 13th century, initiated and popularized by the poet-scholar Amir Khusrau at the shrine of Hazrat Nizamuddin Auliya in Delhi. Performed by a lead singer (qawwal), chorus, harmonium, and dholak/tabla, Qawwali features repetitive melodic cycles, handclapping, and ecstatic improvisations (tarana, ghazal, kafi) that guide listeners towards spiritual ecstasy and universal divine love across religious divides.",
+    "sourceType": "Institutional",
+    "sourceName": "IGNCA",
+    "sourceUrl": "https://ignca.gov.in/divisionss/janapada-sampada/loka-parampara/intangible-cultural-heritage/inventory-on-the-intangible-cultural-heritage/",
+    "verificationStatus": "Source-supported",
+    "consentStatus": "Documented",
+    "mediaAvailable": false,
+    "mediaLinks": [],
+    "coordinates": {
+      "lat": 28.59,
+      "lng": 77.24
+    },
+    "tags": ["Qawwali", "Sufi Devotional Music", "Amir Khusrau", "Nizamuddin", "Delhi", "IGNCA Inventory"]
+  }
+]

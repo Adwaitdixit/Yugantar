@@ -1,0 +1,482 @@
+DHAROHAR SETU
+धरोहर सेतु
+Living Cultural Atlas of India
+Product Requirements Document — SIH 2026 / Problem Statement 26197
+One-line product promiseA community-driven, offline-first platform to document, preserve, responsibly verify, and explore India's living cultural heritage.
+Document
+Details
+Problem Statement
+SIH26197 — Student Innovation-Ideas that showcase the rich cultural heritage and traditions of India
+Organization
+AICTE
+Category / Theme
+Software / Heritage & Culture
+Document status
+Edited PRD for SIH internal-round prototype + presentation
+Scope
+MVP-first; future modules explicitly separated from current build
+Owner
+Team [add team name]
+SIH positioningDharohar Setu is not another heritage-information portal. It is a participatory cultural-preservation layer: communities and field collectors can capture local knowledge, the system helps organize it, provenance is retained, and visitors can experience it through an immersive cultural atlas.
+1. Product Vision
+India's living culture exists not only in monuments and official records, but also in voices, songs, recipes, crafts, rituals, oral histories, local languages, and community practices. Dharohar Setu aims to make this knowledge easier to preserve and discover without stripping it of its original context or ownership.
+The platform follows one core principle:
+Tell the story once. Preserve its provenance. Let the community control where it travels.A single Cultural Record can power discovery, audio storytelling, multilingual access, community review, and future learning/institutional integrations—without repeatedly asking a knowledge-holder to submit the same story.
+1.1 Product principles
+Community-first: communities are contributors and knowledge holders, not merely content sources.
+Offline-first: collection must remain possible in low-connectivity environments.
+Original-first: original audio/video and original-language content remain authoritative records.
+Provenance-first: every record retains who/where/when/how/source information where consent permits.
+AI-assisted, not AI-authoritative: AI organizes and assists; it does not declare cultural truth.
+Consent-aware: public, community-only, and restricted knowledge are treated differently at the data/query layer.
+Museum-like discovery: the public experience should feel like exploring a digital cultural museum, not a database.
+2. Problem Definition
+The official problem statement is intentionally broad. Dharohar Setu defines a focused implementation gap: local cultural knowledge is distributed across communities, languages, practitioners and scattered records, making it difficult to capture, preserve, connect and discover in a consistent, provenance-rich way.
+Observed challenge
+Why it matters
+Dharohar Setu response
+Oral and local knowledge
+Stories and practices may exist mainly in memory or spoken form.
+Voice-first capture + original audio preservation.
+Low connectivity
+Remote collection can be blocked by always-online workflows.
+Offline capture queue + later synchronization.
+Language barriers
+Local-language material is difficult for wider audiences to discover.
+Speech-to-text, translation and multilingual metadata.
+Scattered information
+Different records may not share common structure or context.
+Unified Cultural Record schema.
+Weak provenance
+Users may not know who supplied a claim or how it was collected.
+Contributor, source, location, date and evidence metadata.
+Historical misinformation
+User submissions can mix fact, belief and unsupported claims.
+Claim-level evidence workflow + human review.
+Sensitive knowledge
+Some cultural knowledge should not be publicly exposed.
+Tiered consent enforced in queries, not only in UI.
+What we are NOT claimingWe are not claiming that existing government, museum, archaeological, academic or cultural platforms are inadequate overall. Dharohar Setu complements them by creating a community/field-collection layer and connecting community knowledge with discoverability and evidence.
+3. Target Users
+User
+Primary need
+MVP role
+Community member / knowledge holder
+Preserve a story, song, recipe, practice or local knowledge with control over sharing.
+Source of cultural record.
+Field collector / volunteer / teacher
+Record material in low-connectivity areas and sync later.
+Primary capture operator for remote communities.
+Visitor / student
+Explore India's cultural diversity through stories and places.
+Primary public discovery user.
+Community verifier
+Review whether a record accurately represents community knowledge.
+Community verification.
+Institution / researcher
+Find structured, traceable records and preservation priorities.
+Future/limited dashboard role.
+Expert reviewer
+Review historical/evidence-backed claims where expertise is required.
+Future/controlled verification role.
+4. Product Scope & MVP Strategy
+The previous PRD described five modules. For the SIH internal round, the platform is intentionally reduced to one strong core product with supporting capabilities. The full modules remain a roadmap, not a 2-day build commitment.
+Capability
+Internal-round status
+What will actually be demonstrated
+Cultural Record Core
+BUILD
+Capture, metadata, consent, provenance, record detail.
+Interactive Cultural Map
+BUILD
+India → state/region → records; filters and immersive discovery.
+Voice + multilingual AI
+BUILD
+Audio → transcription → translation → summary/category.
+Provenance & verification
+BUILD
+Claim/evidence/status view and community verification demo.
+Offline collection
+BUILD / DEMO
+Save locally → sync when connectivity returns.
+Recipes
+SAMPLE CONTENT
+Recipe is one Cultural Record type; no separate app.
+Folk songs / oral stories
+SAMPLE + CORE
+Primary hero content for demo.
+Endangered-language lens
+FEATURE
+Language metadata + filter/badge, not a separate product.
+Guru-Shishya
+ROADMAP / THIN CONCEPT
+Optional teaching flag + discovery concept only.
+Marketplace
+ROADMAP
+Future commerce layer; not built for internal round.
+Payments / shipping
+ROADMAP
+Not part of MVP.
+Full knowledge graph
+ROADMAP
+Relational model first; graph evolution later.
+Scope ruleA feature is included in the MVP only if it strengthens the single end-to-end story: capture → sync → AI assistance → provenance/verification → cultural discovery.
+5. Core User Journey
+A field collector or contributor selects a cultural record type: Oral Story, Folk Song, Recipe, Craft, Tradition, or Heritage Place.
+The contributor records audio/video or enters available information. The capture flow works offline.
+The app stores the record locally and marks it as pending synchronization.
+When connectivity returns, the record synchronizes to the server.
+AI assists with language detection, transcription, translation, summarization, categorization, keywords, and—where relevant—claim extraction.
+The system attaches provenance: contributor/collector, location, date, original media, source, consent tier and relevant evidence.
+Community or authorized reviewers can correct, approve, reject, or flag the record.
+Public users can discover verified/public records through the immersive map and cultural story pages.
+Hero demoAn elder's local story is recorded offline → synchronized later → transcribed and translated → provenance is shown → community verification is recorded → the story appears on the map → a visitor listens to the original voice.
+6. Cultural Record — Core Data Object
+Every content type uses a common Cultural Record. Specialized fields are added only when necessary. This prevents the platform from becoming five disconnected databases.
+Field group
+Examples
+Identity
+Record ID, title, category, short description
+Geography
+State, district/region, optional village/location, coordinates where safe
+Language
+Original language/dialect, translation language(s)
+Media
+Original audio, video, images, transcript
+People
+Contributor, knowledge holder/practitioner, community
+Context
+Festival, occasion, practice context, regional notes
+Provenance
+Source type, source reference, recording date, collector, evidence
+Consent
+Public / Community-only / Sacred-restricted
+Verification
+Status, reviewer, review notes, evidence links
+Preservation priority
+Transparent rule-based indicators, where applicable
+7. Offline-First Collection
+The platform must not assume that a community has continuous mobile data or smartphone access.
+Step
+Behavior
+1. Collect
+Collector records audio/video and basic metadata without network.
+2. Store
+Record is stored in a local encrypted/persistent queue.
+3. Queue
+Record is marked 'Waiting to sync'.
+4. Reconnect
+App detects connectivity and attempts synchronization.
+5. Sync
+Media + metadata are uploaded; server assigns a canonical record ID.
+6. Confirm
+User sees successful sync and can continue collecting.
+For the internal prototype, a simulated or limited local-sync flow is acceptable, provided the UI clearly demonstrates the intended behavior and the team does not claim production-grade synchronization if it has not been implemented.
+8. AI-Assisted Processing
+AI task
+Input
+Output
+Authority
+Language detection
+Audio/text
+Likely language/dialect
+Assistive
+Speech-to-text
+Original audio
+Transcript
+Editable by reviewer
+Translation
+Original transcript
+Secondary-language text
+Never replaces original
+Summarization
+Transcript/text
+Short summary
+Assistive; should be marked generated
+Categorization
+Record content
+Story/song/recipe/etc.
+Assistive
+Claim extraction
+Historical description
+Atomic claims
+Assistive
+Evidence retrieval
+Claim + trusted-source registry
+Potential supporting/conflicting evidence
+Assistive
+Similarity detection
+New record
+Potential duplicates/related records
+Assistive
+AI boundaryAI must not be presented as the final authority on historical truth or cultural authenticity. It organizes evidence and assists human/community reviewers. Original recordings and source information remain visible.
+9. Provenance & Verification Framework
+The platform distinguishes between different kinds of knowledge instead of assigning a simplistic 'true/false' label.
+Status / type
+Meaning
+Verification basis
+Source-supported
+A claim is supported by a trusted documentary/official/academic source in the platform's evidence registry.
+Source evidence + human review.
+Community-verified
+The record represents a community practice/account and has been reviewed by authorized community contributors.
+Community provenance + review.
+Oral tradition
+A culturally important account is preserved as oral/community tradition without presenting it as documented fact.
+Attribution to speaker/community.
+Unverified
+Insufficient evidence or review is currently available.
+No approval claim made.
+Conflicting / disputed
+Reliable sources or community accounts disagree.
+Conflict is displayed rather than hidden.
+9.1 Claim-level verification example
+If a user submits: 'This temple was built in 1600 by King X', the system should split this into separate claims rather than verifying the whole paragraph.
+Claim
+Evidence
+Result
+Temple dates to 1600
+Official/archival source supports a different period
+Conflicting / disputed
+Built by King X
+No reliable source found
+Unverified
+Temple is historically documented
+Gazetteer/official record
+Source-supported
+Local community attributes it to King X
+Community recordings
+Oral tradition / community account
+Verification principleWe do not certify culture with an AI score. We show who said something, where it came from, what evidence exists, and who reviewed it.
+10. Interactive Cultural Atlas & Museum-Style Experience
+The public interface is intentionally designed as an immersive cultural exploration experience rather than a conventional dashboard.
+Experience
+Design requirement
+Landing page
+Cinematic cultural imagery, minimal navigation, editorial typography, clear 'Begin Exploring' CTA.
+India map
+State-level exploration with subtle cultural visual language; avoid generic map aesthetics.
+State/region drill-down
+Smooth transition into region records, filters and visual storytelling.
+Cultural story page
+Large media, original voice, translation, context, provenance and verification.
+Audio
+Visible waveform/player; original recording stays prominent.
+Provenance
+Visual evidence/record timeline rather than a dense database table.
+Patterns & motifs
+Subtle Indian textile/architectural references; avoid decorative overload.
+Accessibility
+Readable contrast, keyboard/touch usability, captions/transcripts and multilingual support.
+10.1 Suggested visual identity
+Token
+Value
+Use
+Terracotta clay
+#B4552C
+Primary actions / cultural accent
+Indigo dye
+#2B3A55
+Navigation / headings / verified states
+Turmeric
+#D9A441
+Attention / preservation priority
+Madder red
+#8C3B3B
+Restricted/sensitive state only
+Warm ivory
+#F3ECDD
+Primary background
+Slate ink
+#2E2A26
+Body text
+Sage verified
+#6B7F5E
+Positive/verified state
+The visual system should feel like a premium digital museum: cinematic, warm, editorial, restrained and authentic. Avoid excessive gradients, generic SaaS cards, bright 'Indian template' aesthetics, or AI-generated historical imagery presented as authentic evidence.
+11. MVP Screens
+Screen
+Purpose
+Must show
+1. Landing / Explore
+Create the museum-like first impression.
+Hero statement, Begin Exploring, cultural imagery.
+2. Cultural Map
+Geographic discovery.
+India map, state/region selection, record counts, filters.
+3. Cultural Record
+Experience one preserved record.
+Original media, transcript, translation, context, contributor, provenance, status.
+4. Contribute
+Capture new knowledge.
+Record/upload, category, metadata, consent, offline state.
+5. AI Processing
+Show technical intelligence.
+Language, transcription, translation, categorization, claims.
+6. Verification
+Show trust mechanism.
+Claim → evidence → reviewer/community → status.
+7. Lightweight Reviewer/Admin
+Demonstrate moderation.
+Pending records, evidence panel, edit/approve/reject/flag.
+12. Technical Architecture — SIH MVP
+The internal-round build should favor reliability and speed over architectural complexity.
+Layer
+Recommended MVP choice
+Reason
+Client
+React / Next.js PWA
+Fast UI development + mobile-first/offline-capable web experience.
+Styling
+Tailwind CSS
+Rapid consistent design system.
+Animation
+Framer Motion; GSAP only if truly needed
+Smooth museum-like transitions without excessive complexity.
+Map
+Leaflet + open GeoJSON
+No API-key dependency for the demo; highly stylable.
+Backend
+Node.js API or equivalent team-familiar backend
+Simple REST integration.
+Database
+PostgreSQL / Supabase
+Enough for the MVP; supports relational provenance and geo extensions.
+Offline
+IndexedDB / local persistent queue
+Core offline capture requirement.
+Media
+Object storage / Supabase Storage or equivalent
+Audio/image/video storage.
+AI
+Existing speech/translation/LLM services available to team
+No custom model training for MVP.
+Evidence
+Small curated trusted-source registry
+Controlled demo; avoids dependency on many live APIs.
+Future graph
+Neo4j or graph-oriented relational model
+Scale option after MVP validation.
+Prototype ruleDo not build a multi-API ecosystem in the 2-day sprint. Seed a small, real, source-attributed evidence dataset and demonstrate the architecture. Expand integrations after the internal round.
+13. Trusted Source Registry
+The verification system depends on traceable evidence. For the prototype, the team should create a small curated registry of authoritative or otherwise clearly classified sources rather than claiming nationwide coverage.
+Source record field
+Example
+Source name
+Government publication / archive / academic publication
+Authority / publisher
+Institution name
+Source type
+Government / archival / academic / community
+Region
+State/district where relevant
+Reference
+Document title, identifier or URL where permitted
+Date
+Publication/record date where known
+Relevant claim
+What specific fact the source supports
+Access/reuse note
+Usage terms or restrictions
+For living traditions, community provenance can be the primary source type. It should be labeled as such and not silently converted into historical fact.
+14. Consent, Ethics & Data Governance
+Public: discoverable by public users, subject to the contributor's consent.
+Community-only: visible only to authorized community/reviewer audiences.
+Sacred-restricted: never exposed outside the explicitly consented audience; access control must be enforced at the query/data layer.
+Documentation consent and future commercial use are separate permissions.
+Original-language audio is preserved as the authoritative record for multilingual/endangered-language content.
+AI-generated translations/summaries must not overwrite original material.
+Contributors should be able to correct or request review of records where appropriate.
+Sensitive location information should not be exposed if doing so could harm a community, site, or practice.
+15. Success Metrics for the Prototype
+Metric
+Prototype target / demonstration
+End-to-end cultural record
+At least one complete record from capture to public discovery.
+AI processing
+Demonstrate transcription + translation + categorization on a real/sample recording.
+Offline behavior
+Demonstrate save-without-network and later synchronization behavior.
+Provenance completeness
+Every demo record displays source/contributor/location/date/consent where applicable.
+Verification transparency
+At least one historical claim shows evidence and a review status.
+Discovery
+Map → region → record journey works smoothly.
+UI quality
+All core screens use the same visual system and feel like one product.
+16. 48-Hour Build Plan for SIH Internal Round
+Time block
+Priority
+Deliverable
+0–3 hours
+LOCK
+Name, tagline, MVP scope, data model, screen list, tech stack.
+3–8 hours
+BUILD
+Landing + Explore map + Cultural Record UI.
+8–14 hours
+BUILD
+Contribution flow + database + sample records.
+14–20 hours
+BUILD
+AI processing demo + provenance + verification UI.
+20–26 hours
+BUILD
+Offline save/sync demo + reviewer screen.
+26–34 hours
+POLISH
+Images, typography, animation, responsive layout, data cleanup.
+34–40 hours
+PPT
+10-slide presentation + architecture + problem/solution/impact.
+40–48 hours
+REHEARSE
+3-minute demo, judge Q&A, bug fixes, backup demo video/screenshots.
+17. Future Roadmap
+Phase
+Scope
+Phase 1 — SIH Internal MVP
+Core + Map + one complete voice/cultural-record flow + provenance/verification demo.
+Phase 2 — Pilot
+More communities, multilingual coverage, stronger offline synchronization, recipe and endangered-language lenses.
+Phase 3 — Continuity
+Guru-Shishya discovery with safety/consent infrastructure; institutional workflows.
+Phase 4 — Ecosystem
+Optional artisan commerce, institutional integrations, larger evidence registry and graph-scale data model.
+18. Risks & Mitigations
+Risk
+Mitigation
+Scope explosion
+Only Core + Map + one end-to-end flow are MVP commitments.
+AI hallucination
+AI is assistive; original source and human/community review remain visible.
+Verification cold-start
+Start with a small curated evidence registry and limited pilot region/content.
+Low connectivity
+Offline-first collection and sync queue.
+Cultural sensitivity
+Tiered consent and restricted-query enforcement.
+Data authenticity
+Provenance fields and separate historical fact/oral tradition statuses.
+Beautiful UI but weak functionality
+One complete demo journey must work end-to-end.
+Functional product but weak presentation
+Freeze core functionality early and reserve dedicated time for UI/PPT/rehearsal.
+19. Key Judge Questions — Prepared Answers
+Q: How are you different from ASI/government portals?
+A: We are not replacing them. We add a community/field-collection and living-culture layer for oral stories, songs, recipes and local practices, while allowing institutional evidence to be referenced where available.
+Q: How can AI verify history?
+A: AI does not decide truth. It extracts claims and retrieves potential evidence. A human/community reviewer makes the final verification decision, and the evidence remains visible.
+Q: What if there is no historical evidence?
+A: We preserve the account as oral tradition or community knowledge rather than falsely labeling it as documented history.
+Q: How will remote communities use it without internet?
+A: Collectors can record offline. Records remain in a local queue and synchronize when connectivity returns.
+Q: Why do you need AI?
+A: Many contributions are audio and multilingual. AI reduces transcription, translation, classification and evidence-search effort while preserving the original recording.
+Q: Why not build all five modules?
+A: The modules are future applications of the same Core. For the internal round, we prove the Core through one complete journey and show the other modules as roadmap extensions.
+20. Final Product Positioning
+The pitchDharohar Setu is a living cultural atlas—not a static heritage directory. It helps communities preserve local knowledge in their own voices, works in low-connectivity environments, uses AI to make that knowledge searchable and multilingual, keeps provenance visible, and lets people explore India's cultural diversity through an immersive digital experience.
+Preserve locally. Verify responsibly. Explore globally.
+This edited PRD is intentionally MVP-first for SIH internal evaluation. Production claims, national-scale coverage, full institutional integrations, commerce, and advanced knowledge-graph infrastructure remain future work.

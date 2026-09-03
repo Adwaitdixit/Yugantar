@@ -1,0 +1,326 @@
+/* ============================================================
+   Reviewer Console Styles
+   ============================================================ */
+
+.reviewer-page {
+  padding: var(--space-2xl) 0 var(--space-4xl);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+  background: var(--bg-canvas);
+}
+
+.reviewer-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/* Queue Panel */
+.queue-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.queue-header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.queue-header h3 {
+  font-size: 1rem;
+}
+
+.queue-count {
+  background: var(--turmeric);
+  color: white;
+  padding: 2px 10px;
+  border-radius: var(--radius-round);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.queue-list {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.queue-record {
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.queue-record:hover {
+  background: rgba(180, 85, 44, 0.04);
+}
+
+.queue-record.active {
+  background: rgba(180, 85, 44, 0.08);
+  border-left: 3px solid var(--terracotta);
+}
+
+.queue-record .emoji {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.queue-record .info h4 {
+  font-size: 0.88rem;
+  margin-bottom: 2px;
+}
+
+.queue-record .info p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.queue-record .info .badges {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Review Panel */
+.review-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.review-panel-header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-panel-header h3 {
+  font-size: 1.1rem;
+}
+
+.review-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.review-tab {
+  flex: 1;
+  padding: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all var(--duration-fast);
+}
+
+.review-tab:hover {
+  color: var(--terracotta);
+}
+
+.review-tab.active {
+  color: var(--terracotta);
+  border-bottom-color: var(--terracotta);
+  font-weight: 600;
+}
+
+.review-content {
+  padding: var(--space-lg);
+}
+
+/* Media Panel */
+.media-preview {
+  background: linear-gradient(135deg, var(--indigo-deep), #1a2332);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  color: var(--ivory);
+}
+
+.media-preview h4 {
+  color: var(--ivory);
+  margin-bottom: var(--space-sm);
+  font-size: 0.9rem;
+}
+
+.media-waveform {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 40px;
+}
+
+.media-waveform .bar {
+  flex: 1;
+  background: var(--terracotta);
+  opacity: 0.6;
+  border-radius: 1px;
+  min-width: 2px;
+}
+
+/* Claims Review */
+.claims-review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.claim-review-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--ivory-warm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+
+.claim-review-item .claim-body {
+  flex: 1;
+}
+
+.claim-review-item .claim-body h5 {
+  font-size: 0.88rem;
+  margin-bottom: 4px;
+}
+
+.claim-review-item .claim-body .evidence-link {
+  font-size: 0.78rem;
+  color: var(--terracotta);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Review Actions */
+.review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-light);
+}
+
+.review-action-btn {
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.review-action-btn.approve {
+  background: var(--sage);
+  color: white;
+}
+
+.review-action-btn.approve:hover {
+  background: var(--sage-dark);
+}
+
+.review-action-btn.oral {
+  background: var(--turmeric);
+  color: white;
+}
+
+.review-action-btn.oral:hover {
+  background: var(--turmeric-dark);
+}
+
+.review-action-btn.clarify {
+  background: var(--ivory-warm);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+}
+
+.review-action-btn.clarify:hover {
+  border-color: var(--terracotta);
+  color: var(--terracotta);
+}
+
+.review-action-btn.reject {
+  background: rgba(140, 59, 59, 0.1);
+  color: var(--madder);
+}
+
+.review-action-btn.reject:hover {
+  background: var(--madder);
+  color: white;
+}
+
+/* Review Notes */
+.review-notes {
+  margin-top: var(--space-md);
+}
+
+/* Empty State */
+.empty-review {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4xl);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.empty-review .icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+  opacity: 0.5;
+}
+
+/* Action Log */
+.action-log {
+  margin-top: var(--space-lg);
+}
+
+.log-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.82rem;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-item .log-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .reviewer-layout {
+    grid-template-columns: 1fr;
+  }
+}
