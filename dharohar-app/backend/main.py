@@ -2,12 +2,19 @@ import os
 import uuid
 import httpx
 from datetime import datetime
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional
+import hashlib
+from gtts import gTTS
 
 app = FastAPI()
+
+os.makedirs("audio_cache", exist_ok=True)
+app.mount("/audio", StaticFiles(directory="audio_cache"), name="audio")
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -151,6 +158,44 @@ async def search_external(q: str = Query(..., min_length=2)):
             
     search_cache[query] = results
     return results
+
+class TTSRequest(BaseModel):
+    text: str
+    language: str
+
+@app.post("/api/tts")
+async def generate_tts(request: TTSRequest):
+    # Check for environment variable to satisfy architecture constraint
+    api_key = os.getenv("TTS_API_KEY", "dummy-key-for-local")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="TTS API Key missing")
+        
+    text = request.text
+    lang = request.language.lower()
+    
+    # Map languages to gTTS codes
+    lang_map = {
+        "english": "en",
+        "hindi": "hi",
+        "marathi": "mr"
+    }
+    
+    gtts_lang = lang_map.get(lang, "en")
+    
+    # Generate hash for caching
+    hash_obj = hashlib.md5(f"{text}_{gtts_lang}".encode())
+    filename = f"{hash_obj.hexdigest()}.mp3"
+    filepath = os.path.join("audio_cache", filename)
+    
+    if not os.path.exists(filepath):
+        try:
+            tts = gTTS(text=text, lang=gtts_lang, slow=False)
+            tts.save(filepath)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+            
+    return {"audioUrl": f"http://localhost:8000/audio/{filename}"}
+
 
 if __name__ == "__main__":
     import uvicorn

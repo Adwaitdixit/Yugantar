@@ -1207,13 +1207,14 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
             {!selectedReference ? (
               <div>
                 <div style={{ position: 'relative', maxWidth: '500px' }}>
+                  <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                   <input
                     type="text"
-                    className="form-control"
+                    className="input"
                     placeholder="Search Wikipedia/Wikidata (e.g. 'Warli Painting')"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{ paddingRight: '40px' }}
+                    style={{ paddingLeft: '38px', paddingRight: '40px', width: '100%' }}
                   />
                   {isSearching && (
                     <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }}>
@@ -1234,20 +1235,20 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
                 {searchResults.length > 0 && (
                   <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {searchResults.map(result => (
-                      <div key={result.id} style={{ display: 'flex', gap: '16px', padding: '16px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: '#fff', alignItems: 'flex-start' }}>
+                      <div key={result.id} style={{ display: 'flex', gap: '16px', padding: '16px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'rgba(255, 255, 255, 0.03)', alignItems: 'flex-start' }}>
                         {result.images && result.images.length > 0 && (
                           <img src={result.images[0]} alt={result.title} style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />
                         )}
                         <div style={{ flex: 1 }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem', color: 'var(--slate)' }}>
+                            <h4 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: 'var(--slate)' }}>
                               {result.title}
                             </h4>
-                            <span style={{ fontSize: '0.7rem', padding: '2px 6px', background: 'rgba(0,0,0,0.05)', borderRadius: '4px', color: 'var(--text-secondary)' }}>
+                            <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(255,255,255,0.08)', borderRadius: '12px', color: 'var(--text-secondary)' }}>
                               External Knowledge
                             </span>
                           </div>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: 'var(--text-secondary)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '0.9rem', color: 'var(--text-secondary)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                             {result.shortDescription}
                           </p>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>

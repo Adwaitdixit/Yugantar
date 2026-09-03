@@ -6,6 +6,7 @@ import {
 import { CATEGORY_CONFIG, VERIFICATION_CONFIG, CONSENT_CONFIG, type CulturalRecord, type ProvenanceEvent } from '../data/types';
 import { evidenceRegistry } from '../data/seedData';
 import { formatAudioDuration, formatPlaybackTime } from '../utils/audioDuration';
+import HeritageAudioPlayer from './HeritageAudioPlayer';
 import './styles/RecordDetail.css';
 
 interface RecordDetailProps {
@@ -260,36 +261,9 @@ export default function RecordDetail({ record, onClose }: RecordDetailProps) {
             </div>
           )}
 
-          {/* Preserved Original Audio Player */}
-          {(record.originalAudioUrl || record.audioScript) && (
-            <div className="audio-player-section" id="audio-player">
-              <div className="audio-player-header">
-                <h4>🎙️ Preserved Original Voice Recording</h4>
-                <span className="tag" style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--ivory)', borderColor: 'rgba(255,255,255,0.2)' }}>
-                  {record.originalLanguage}
-                </span>
-              </div>
-              <div className="audio-waveform">
-                {waveBars.map((h, i) => (
-                  <div
-                    key={i}
-                    className={`wave-bar ${isPlaying ? 'active' : ''}`}
-                    style={{ height: `${Math.max(4, isPlaying ? h : h * 0.4)}%` }}
-                  />
-                ))}
-              </div>
-              <div className="audio-controls">
-                <button className="play-btn" onClick={togglePlay} title={isPlaying ? 'Pause' : 'Play Preserved Audio'}>
-                  {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-                </button>
-                <span className="audio-time" style={{ fontFamily: 'var(--font-mono, monospace)', letterSpacing: '0.5px' }}>
-                  {formatPlaybackTime(audioCurrentTime)} / {formatAudioDuration(record.audioDuration)}
-                </span>
-                <div style={{ flex: 1 }} />
-                <span style={{ fontSize: '0.75rem', opacity: 0.6 }}>Primary Cultural Source Audio</span>
-              </div>
-            </div>
-          )}
+          {/* NEW AI + COMMUNITY AUDIO PLAYER */}
+          <HeritageAudioPlayer record={record} />
+
 
           {/* Transcript */}
           {(record.transcriptOriginal || record.transcriptEnglish) && (
