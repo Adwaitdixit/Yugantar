@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {
   ArrowRight, Compass, ZoomIn, ZoomOut, RotateCcw,
-  AlertTriangle, BookOpen, Volume2, Layers, ExternalLink, MapPin, Navigation, ShieldCheck
+  AlertTriangle, BookOpen, Volume2, Layers, ExternalLink, MapPin, Navigation, ShieldCheck, Search
 } from 'lucide-react';
 import { INDIA_STATES_GEO, ZONE_CENTROIDS, INDIA_MAP_BOUNDS } from '../data/indiaMapData';
 import { useCulturalRecords } from '../data/culturalStore';
@@ -37,13 +38,19 @@ function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon
 }
 
 export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const initialCategory = (searchParams.get('category') as RecordCategory | 'all') || 'all';
+
   const culturalRecords = useCulturalRecords();
   const [selectedStateId, setSelectedStateId] = useState<string>('MH');
   const [activeZone, setActiveZone] = useState<string>('All');
-  const [categoryFilter, setCategoryFilter] = useState<RecordCategory | 'all'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<RecordCategory | 'all'>(initialCategory);
   const [datasetFilter, setDatasetFilter] = useState<'all' | 'ignca' | 'unesco' | 'community'>('all');
   const [onlyEndangered, setOnlyEndangered] = useState<boolean>(false);
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
 
   // Geolocation & Explore Near Me state
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -435,6 +442,24 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
     }
   };
 
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim() || !mapInstanceRef.current) return;
+    setIsSearching(true);
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery + ', India')}`);
+      const data = await res.json();
+      if (data && data.length > 0) {
+        const { lat, lon } = data[0];
+        mapInstanceRef.current.flyTo([parseFloat(lat), parseFloat(lon)], 10, { duration: 1.5 });
+      }
+    } catch (err) {
+      console.error('Search failed', err);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
   // Handle Zone filter click with smooth flyTo
   const handleZoneClick = (z: string) => {
     setActiveZone(z);
@@ -536,7 +561,7 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
                 className={`zone-chip ${activeZone === z ? 'active' : ''}`}
                 onClick={() => handleZoneClick(z)}
               >
-                {z === 'All' ? '🇮🇳 All India' : z}
+                {z === 'All' ? 'All India' : z}
               </button>
             ))}
           </div>
@@ -593,7 +618,39 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
         {/* Main Map & Dossier Layout */}
         <div className="heritage-map-layout">
           {/* Real Leaflet OpenStreetMap Container */}
-          <div className="heritage-map-canvas-card" id="india-heritage-map" style={{ padding: 0 }}>
+          <div className="heritage-map-canvas-card" style={{ padding: 0 }}>
+            
+            {/* Search Overlay */}
+            <form onSubmit={handleSearch} className="map-search-overlay premium-glass">
+              <Search size={16} />
+              <input 
+                type="text" 
+                placeholder="Search city, district or state..." 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+              />
+              <button type="submit" disabled={isSearching} className="btn-sm btn-primary">Go</button>
+            </form>
+            
+            {/* Legend Overlay */}
+            <div className="map-legend-overlay premium-glass">
+              <h4 style={{ margin: '0 0 10px 0', fontSize: '11px', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span>🗺️ Map Legend</span>
+              </h4>
+              <div className="legend-section">
+                <strong>Dataset</strong>
+                <div className="legend-item"><span className="legend-pin leaflet-pin-ignca">🏛️</span> IGNCA</div>
+                <div className="legend-item"><span className="legend-pin leaflet-pin-unesco">🌐</span> UNESCO</div>
+                <div className="legend-item"><span className="legend-pin leaflet-pin-community">👥</span> Community</div>
+              </div>
+              <div className="legend-section">
+                <strong>Risk</strong>
+                <div className="legend-item"><span className="legend-pin leaflet-pin-endangered">⚠</span> Endangered</div>
+              </div>
+            </div>
+
+            <div id="india-heritage-map" style={{ width: '100%', height: '100%' }}></div>
+
             {/* Custom Themed Map View Controls */}
             <div className="map-view-controls">
               <button
@@ -720,20 +777,18 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
                 <div className="dossier-body">
                   <div className="dossier-records-section">
                     {nearbyRecords.length === 0 ? (
-                      <div className="empty-dossier-state">
-                        <MapPin size={28} style={{ color: 'var(--text-muted)', marginBottom: '8px' }} />
-                        <p>No heritage records found within {radiusKm} km of your location.</p>
-                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', margin: '6px 0 10px' }}>
-                          Try expanding the search radius (e.g. 50 km or 100 km) or explore state dossiers.
-                        </span>
-                        <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
-                          <button className="btn btn-sm btn-secondary" onClick={() => setRadiusKm(50)}>
-                            Try 50 km
-                          </button>
-                          <button className="btn btn-sm btn-secondary" onClick={() => setRadiusKm(100)}>
-                            Try 100 km
-                          </button>
-                        </div>
+                      <div className="empty-dossier-state premium-glass" style={{ textAlign: 'center', padding: '2rem 1.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                        <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🏛️</div>
+                        <h4 style={{ color: 'var(--text-light)', marginBottom: '0.5rem' }}>Your area is still waiting to be documented</h4>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem', lineHeight: 1.5 }}>
+                          No documented heritage was found within {radiusKm} km of this location. Help preserve the traditions, places and stories of your community.
+                        </p>
+                        <button className="btn btn-primary" style={{ width: '100%', marginBottom: '0.75rem' }} onClick={() => navigate('/contribute')}>
+                          + Add Heritage from this Area
+                        </button>
+                        <button className="btn btn-secondary" style={{ width: '100%' }} onClick={() => setRadiusKm(radiusKm === 10 ? 50 : 100)}>
+                          Expand Search Radius
+                        </button>
                       </div>
                     ) : (
                       <div className="dossier-record-cards">
@@ -854,12 +909,15 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
                     </div>
 
                     {selectedStateRecords.length === 0 ? (
-                      <div className="empty-dossier-state">
-                        <BookOpen size={28} style={{ color: 'var(--text-muted)', marginBottom: '8px' }} />
-                        <p>No records matching active filters in {selectedGeo.name}.</p>
-                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                          Try selecting "All Datasets" or exploring other cultural zones.
-                        </span>
+                      <div className="empty-dossier-state premium-glass" style={{ textAlign: 'center', padding: '2rem 1.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                        <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🏛️</div>
+                        <h4 style={{ color: 'var(--text-light)', marginBottom: '0.5rem' }}>This region is still waiting to be documented</h4>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem', lineHeight: 1.5 }}>
+                          No documented heritage was found in {selectedGeo.name} matching these filters. Help preserve the traditions, places and stories of your community.
+                        </p>
+                        <button className="btn btn-primary" style={{ width: '100%', marginBottom: '0.75rem' }} onClick={() => navigate('/contribute')}>
+                          + Add Heritage from {selectedGeo.name}
+                        </button>
                       </div>
                     ) : (
                       <div className="dossier-record-cards">

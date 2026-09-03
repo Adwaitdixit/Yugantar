@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   Compass, Map, Mic, Cpu, ShieldCheck, ClipboardCheck,
   Menu, X, Wifi, WifiOff, LogIn, LogOut, User as UserIcon,
-  Shield, ChevronDown, BookOpen, UserCheck
+  Shield, ChevronDown, BookOpen, UserCheck, Camera
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import UserProfileModal from './UserProfileModal';
@@ -45,6 +45,7 @@ export default function Header({
     { to: '/', icon: <Compass size={16} />, label: 'Explore', show: true },
     { to: '/map', icon: <Map size={16} />, label: 'Heritage Map', show: true },
     { to: '/contribute', icon: <Mic size={16} />, label: 'Contribute', show: true },
+    { to: '/lens', icon: <Camera size={16} />, label: 'Heritage Lens', show: true },
     { to: '/ai-pipeline', icon: <Cpu size={16} />, label: 'AI Pipeline', show: true },
     { to: '/verification', icon: <ShieldCheck size={16} />, label: 'Verification', show: isExpert || isAdmin },
     { to: '/reviewer', icon: <ClipboardCheck size={16} />, label: 'Reviewer', show: isReviewer },

@@ -810,3 +810,139 @@
     height: 550px;
   }
 }
+
+/* ============================================================
+   Map Overlays (Search & Legend)
+   ============================================================ */
+
+.heritage-map-canvas-card {
+  position: relative;
+}
+
+.map-search-overlay {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.map-search-overlay svg {
+  color: var(--primary);
+}
+
+.map-search-overlay input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-light);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  width: 240px;
+}
+
+.map-search-overlay input::placeholder {
+  color: var(--text-muted);
+}
+
+.map-search-overlay .btn-primary {
+  border-radius: var(--radius-full);
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.map-search-overlay .btn-primary:hover {
+  background: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.map-legend-overlay {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1000;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  width: 220px;
+}
+
+.legend-section {
+  margin-bottom: 12px;
+}
+
+.legend-section:last-child {
+  margin-bottom: 0;
+}
+
+.legend-section strong {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 6px;
+}
+
+.legend-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+}
+
+/* Reusing existing pin colors for the legend */
+.leaflet-pin-ignca {
+  background: rgba(180, 85, 44, 0.2);
+  border: 1px solid var(--terracotta);
+}
+
+.leaflet-pin-unesco {
+  background: rgba(217, 164, 65, 0.2);
+  border: 1px solid var(--turmeric-dark);
+}
+
+.leaflet-pin-community {
+  background: rgba(67, 98, 77, 0.2);
+  border: 1px solid var(--sage);
+}
+
+.leaflet-pin-endangered {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid var(--error);
+  color: var(--error);
+}

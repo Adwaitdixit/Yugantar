@@ -10,7 +10,11 @@ from typing import List, Optional
 import hashlib
 from gtts import gTTS
 
+from routes.heritage_lens import router as heritage_lens_router
+
 app = FastAPI()
+
+app.include_router(heritage_lens_router)
 
 os.makedirs("audio_cache", exist_ok=True)
 app.mount("/audio", StaticFiles(directory="audio_cache"), name="audio")

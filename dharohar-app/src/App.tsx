@@ -10,6 +10,7 @@ import VerificationWorkbench from './components/VerificationWorkbench';
 import ReviewerConsole from './components/ReviewerConsole';
 import AdminConsole from './components/AdminConsole';
 import ProtectedRoute from './components/ProtectedRoute';
+import HeritageLens from './components/HeritageLens/HeritageLens';
 import AuthModal, { type AuthIntent } from './components/AuthModal';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import type { CulturalRecord } from './data/types';
@@ -112,6 +113,8 @@ function AppContent() {
           />
           <Route path="/ai-pipeline" element={<AIPipelineVisualizer />} />
           <Route path="/pipeline" element={<AIPipelineVisualizer />} />
+          <Route path="/lens" element={<HeritageLens />} />
+          <Route path="/heritage-lens" element={<HeritageLens />} />
           <Route
             path="/verification"
             element={

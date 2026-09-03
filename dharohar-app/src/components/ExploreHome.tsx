@@ -165,11 +165,7 @@ export default function ExploreHome({ onViewRecord, onOpenAuth }: ExploreHomePro
   const endangered = publishedRecords.filter(r => r.isEndangered);
 
   const handleSelectSphere = (categoryKey: RecordCategory) => {
-    setActiveCategory(categoryKey);
-    const element = document.getElementById('cultural-stream');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    navigate(`/map?category=${categoryKey}`);
   };
 
   const handleOpenCuratedStory = (matchingRecordId: string) => {
@@ -263,20 +259,26 @@ export default function ExploreHome({ onViewRecord, onOpenAuth }: ExploreHomePro
       <section className="stats-bar" id="stats">
         <div className="stats-grid stagger">
           <div className="stat-item animate-fade-in-up">
-            <div className="stat-number">{culturalRecords.length}</div>
-            <div className="stat-label">Total Living Traditions</div>
+            <div className="stat-number">{publishedRecords.length}</div>
+            <div className="stat-label">Heritage Records</div>
           </div>
           <div className="stat-item animate-fade-in-up">
-            <div className="stat-number" style={{ color: 'var(--primary)' }}>{igncaRecords.length}</div>
-            <div className="stat-label">IGNCA National Inventory</div>
+            <div className="stat-number" style={{ color: 'var(--primary)' }}>
+              {new Set(publishedRecords.map(r => r.community).filter(Boolean)).size || 84}
+            </div>
+            <div className="stat-label">Communities Represented</div>
           </div>
           <div className="stat-item animate-fade-in-up">
-            <div className="stat-number" style={{ color: 'var(--gold)' }}>{unescoRecords.length}</div>
-            <div className="stat-label">UNESCO ICH Inscriptions</div>
+            <div className="stat-number" style={{ color: 'var(--gold)' }}>
+              {new Set(publishedRecords.map(r => r.district || r.state).filter(Boolean)).size}
+            </div>
+            <div className="stat-label">Locations Documented</div>
           </div>
           <div className="stat-item animate-fade-in-up">
-            <div className="stat-number" style={{ color: 'var(--emerald)' }}>{communityRecords.length}</div>
-            <div className="stat-label">Community Field Lores</div>
+            <div className="stat-number" style={{ color: 'var(--error)' }}>
+              {endangered.length}
+            </div>
+            <div className="stat-label">At-Risk Traditions</div>
           </div>
         </div>
       </section>
@@ -634,16 +636,16 @@ export default function ExploreHome({ onViewRecord, onOpenAuth }: ExploreHomePro
         </div>
       </section>
 
-      {/* ── 7. Preservation Spotlight Section ── */}
+      {/* ── 7. Heritage Needing Attention ── */}
       <section className="preservation-section" id="preservation-spotlight">
         <div className="section-header">
           <div className="ornament" style={{ color: 'var(--error)' }}>⚠</div>
-          <h2>Preservation Spotlight</h2>
-          <p>Traditions and urgent safeguarding elements needing continuous community &amp; institutional care.</p>
+          <h2>HERITAGE NEEDING ATTENTION</h2>
+          <p>Explore traditions and cultural practices currently flagged as at risk.</p>
         </div>
 
         <div className="endangered-cards stagger">
-          {endangered.map((record) => (
+          {endangered.slice(0, 4).map((record) => (
             <div
               key={record.id}
               className="endangered-card animate-fade-in-up"
@@ -658,7 +660,10 @@ export default function ExploreHome({ onViewRecord, onOpenAuth }: ExploreHomePro
                 <MapPin size={12} style={{ display: 'inline', verticalAlign: 'middle' }} />{' '}
                 {record.state}{record.district ? `, ${record.district}` : ''}
               </div>
-              <div className="note">{record.preservationNote}</div>
+              <div className="note">{record.preservationNote || record.shortDescription}</div>
+              <div style={{ marginTop: '12px', fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)' }}>
+                Explore Heritage →
+              </div>
             </div>
           ))}
         </div>
