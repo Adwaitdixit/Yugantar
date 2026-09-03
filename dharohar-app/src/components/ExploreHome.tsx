@@ -152,7 +152,6 @@ export default function ExploreHome({ onViewRecord, onOpenAuth }: ExploreHomePro
   const publishedRecords = culturalRecords.filter(r => !r.lifecycleStatus || r.lifecycleStatus === 'published');
   const igncaRecords = publishedRecords.filter(r => r.id.startsWith('ICH0'));
   const unescoRecords = publishedRecords.filter(r => r.id.startsWith('ICH-'));
-  const communityRecords = publishedRecords.filter(r => !r.id.startsWith('ICH0') && !r.id.startsWith('ICH-'));
 
   const filtered = activeCategory === 'all'
     ? publishedRecords

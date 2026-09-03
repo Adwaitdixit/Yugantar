@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Check, Cpu, RefreshCw, ArrowDown, Download, Eye, ArrowRight as ArrowRightIcon, MapPin, ChevronDown, FileText, Globe, Key, List, Database } from 'lucide-react';
+import { Play, Check, Cpu, RefreshCw, ArrowDown, Download, ArrowRight as ArrowRightIcon, MapPin, ChevronDown, FileText, Globe, Key, List, Database } from 'lucide-react';
 import { processCulturalTextWithGemini } from '../services/geminiService';
 import type { GeminiCulturalAnalysis } from '../data/types';
-import { culturalStore, useCulturalRecords } from '../data/culturalStore';
+import { culturalStore } from '../data/culturalStore';
 import './styles/AIPipeline.css';
 
 interface PipelineStage {
@@ -34,7 +34,6 @@ const PRESET_SAMPLES = [
 
 export default function AIPipelineVisualizer() {
   const navigate = useNavigate();
-  const allStoreRecords = useCulturalRecords();
 
   const [selectedRecordId, setSelectedRecordId] = useState<string>('');
   const [inputText, setInputText] = useState(SAMPLE_INPUT);
@@ -45,18 +44,6 @@ export default function AIPipelineVisualizer() {
   const [analysisResult, setAnalysisResult] = useState<GeminiCulturalAnalysis | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
   const [sourceExpanded, setSourceExpanded] = useState(true);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const candidateRecords = allStoreRecords.filter(r => !r.id.startsWith('ICH0') && !r.id.startsWith('ICH-'));
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleSelectRecord = (recId: string) => {
-    setSelectedRecordId(recId);
-    const rec = allStoreRecords.find(r => r.id === recId);
-    if (rec) {
-      setInputText(rec.fullDescription || `${rec.title}. Recorded in ${rec.originalLanguage} from ${rec.state}.`);
-    }
-  };
 
   const runPipeline = async () => {
     if (!inputText.trim() || isProcessing) return;

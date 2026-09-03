@@ -297,7 +297,7 @@ export default function HeritageAudioPlayer({ record }: HeritageAudioPlayerProps
                       <div className="creation-row">
                         <span className="cr-label">Record Status</span>
                         <span className="cr-value">
-                          {record.verificationStatus === 'verified' ? (
+                          {record.verificationStatus === 'source_supported' || record.verificationStatus === 'community_verified' ? (
                             <><CheckCircle size={12} className="text-sage" /> Verified / Approved</>
                           ) : (
                             <><Info size={12} className="text-terracotta" /> {record.verificationStatus.replace('_', ' ')}</>

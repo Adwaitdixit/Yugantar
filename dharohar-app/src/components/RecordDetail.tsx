@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import {
-  X, Play, Pause, MapPin, Calendar, User, Globe, Shield, BookOpen,
+  X, MapPin, Calendar, User, Globe, Shield, BookOpen,
   CheckCircle2, Sparkles, FileText, Users, Award, Eye, History, Info
 } from 'lucide-react';
 import { CATEGORY_CONFIG, VERIFICATION_CONFIG, CONSENT_CONFIG, type CulturalRecord, type ProvenanceEvent } from '../data/types';
 import { evidenceRegistry } from '../data/seedData';
-import { formatAudioDuration, formatPlaybackTime } from '../utils/audioDuration';
 import HeritageAudioPlayer from './HeritageAudioPlayer';
 import './styles/RecordDetail.css';
 
@@ -24,76 +23,10 @@ const LIFECYCLE_STAGES_CONFIG: { stage: ProvenanceEvent['stage']; label: string;
 ];
 
 export default function RecordDetail({ record, onClose }: RecordDetailProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audioCurrentTime, setAudioCurrentTime] = useState(0);
   const [transcriptTab, setTranscriptTab] = useState<'original' | 'english'>('original');
   const [selectedTimelineStage, setSelectedTimelineStage] = useState<string | null>(null);
-  const [waveBars, setWaveBars] = useState<number[]>([]);
-  const animRef = useRef<number>(0);
-  const audioElRef = useRef<HTMLAudioElement | null>(null);
 
   const currentStatus = record.lifecycleStatus || 'published';
-
-  // Setup audio element if original audio url exists
-  useEffect(() => {
-    if (record.originalAudioUrl) {
-      const audio = new Audio(record.originalAudioUrl);
-      audio.ontimeupdate = () => setAudioCurrentTime(audio.currentTime);
-      audio.onended = () => {
-        setIsPlaying(false);
-        setAudioCurrentTime(0);
-      };
-      audio.onerror = (e) => {
-        console.warn('[RecordDetail] Audio playback error:', e);
-        setIsPlaying(false);
-      };
-      audioElRef.current = audio;
-    }
-    return () => {
-      if (audioElRef.current) {
-        audioElRef.current.pause();
-        audioElRef.current = null;
-      }
-    };
-  }, [record.originalAudioUrl]);
-
-  // Generate initial wave bars
-  useEffect(() => {
-    const bars = Array.from({ length: 50 }, () => Math.random() * 100);
-    setWaveBars(bars);
-  }, []);
-
-  // Animate waveform when playing
-  useEffect(() => {
-    if (isPlaying) {
-      const animate = () => {
-        setWaveBars(prev => prev.map(b => Math.max(5, b + (Math.random() - 0.5) * 30)));
-        animRef.current = requestAnimationFrame(animate);
-      };
-      animRef.current = requestAnimationFrame(animate);
-    } else {
-      cancelAnimationFrame(animRef.current);
-    }
-    return () => cancelAnimationFrame(animRef.current);
-  }, [isPlaying]);
-
-  const togglePlay = () => {
-    if (audioElRef.current) {
-      if (isPlaying) {
-        audioElRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioElRef.current.play()
-          .then(() => setIsPlaying(true))
-          .catch(e => {
-            console.warn('[RecordDetail] Playback error:', e);
-            setIsPlaying(false);
-          });
-      }
-    } else {
-      setIsPlaying(!isPlaying);
-    }
-  };
 
   const getClaimIcon = (status: string) => {
     switch (status) {

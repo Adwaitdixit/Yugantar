@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {
   ArrowRight, Compass, ZoomIn, ZoomOut, RotateCcw,
-  AlertTriangle, BookOpen, Volume2, Layers, ExternalLink, MapPin, Navigation, ShieldCheck, Search
+  AlertTriangle, Volume2, Layers, ExternalLink, MapPin, Navigation, ShieldCheck, Search
 } from 'lucide-react';
 import { INDIA_STATES_GEO, ZONE_CENTROIDS, INDIA_MAP_BOUNDS } from '../data/indiaMapData';
 import { useCulturalRecords } from '../data/culturalStore';

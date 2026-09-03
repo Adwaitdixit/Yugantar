@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Camera, Upload, RefreshCw, Box, Compass, Hammer, History, Info, Sparkles, ChevronDown } from 'lucide-react';
+import { Camera, Upload, RefreshCw, Box, Compass, Hammer, History, Info, Sparkles } from 'lucide-react';
 import './HeritageLens.css';
 
 interface LensAnalysis {
