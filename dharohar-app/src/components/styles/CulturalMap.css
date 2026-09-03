@@ -826,52 +826,62 @@
   z-index: 1000;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 16px;
-  border-radius: var(--radius-full);
-  background: var(--surface-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  gap: 10px;
+  padding: 6px 8px 6px 16px;
+  border-radius: 9999px;
+  background: rgba(13, 20, 36, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(224, 109, 68, 0.15);
+  transition: all 0.25s ease;
+}
+
+.map-search-overlay:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(224, 109, 68, 0.35);
 }
 
 .map-search-overlay svg {
   color: var(--primary);
+  flex-shrink: 0;
 }
 
 .map-search-overlay input {
   background: transparent;
   border: none;
   outline: none;
-  color: var(--text-light);
+  color: #ffffff;
   font-family: var(--font-body);
-  font-size: 0.95rem;
-  width: 240px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  width: 250px;
 }
 
 .map-search-overlay input::placeholder {
-  color: var(--text-muted);
+  color: rgba(220, 226, 240, 0.7);
+  font-weight: 400;
 }
 
 .map-search-overlay .btn-primary {
-  border-radius: var(--radius-full);
-  padding: 6px 16px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  border-radius: 9999px;
+  padding: 7px 18px;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: var(--primary);
-  color: #fff;
+  letter-spacing: 0.8px;
+  background: linear-gradient(135deg, var(--primary), #d9582b);
+  color: #ffffff;
   border: none;
   cursor: pointer;
+  box-shadow: 0 3px 10px rgba(224, 109, 68, 0.4);
   transition: all 0.2s ease;
 }
 
 .map-search-overlay .btn-primary:hover {
-  background: var(--primary-light);
+  background: linear-gradient(135deg, #f07e54, var(--primary));
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--primary-glow);
+  box-shadow: 0 5px 15px rgba(224, 109, 68, 0.6);
 }
 
 .map-legend-overlay {
@@ -879,13 +889,13 @@
   bottom: 24px;
   left: 24px;
   z-index: 1000;
-  padding: 16px;
+  padding: 14px 16px;
   border-radius: var(--radius-lg);
-  background: var(--surface-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  background: rgba(13, 20, 36, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   width: 220px;
 }
 
