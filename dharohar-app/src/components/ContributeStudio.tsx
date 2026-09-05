@@ -42,6 +42,11 @@ export default function ContributeStudio({ onRequireAuth }: ContributeStudioProp
   const [captureMode, setCaptureMode] = useState<'audio_record' | 'audio_upload' | 'video' | 'photo' | 'text'>('audio_record');
   const [isUploadingToSupabase, setIsUploadingToSupabase] = useState(false);
   const [syncingAllNotice, setSyncingAllNotice] = useState<string | null>(null);
+
+  // Scroll to top smoothly when changing steps
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [step]);
   const [editingDraftId, setEditingDraftId] = useState<string | null>(null);
   
   // Real MediaRecorder states
