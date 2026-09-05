@@ -157,7 +157,7 @@
 
 /* Uploaded Audio Card with Playback */
 .uploaded-audio-card {
-  background: linear-gradient(135deg, var(--indigo-deep), #1a2332);
+  background: var(--surface-container);
   border-radius: var(--radius-lg);
   padding: var(--space-xl);
   color: var(--ivory);
@@ -369,7 +369,7 @@
 
 /* Voice Recorder Container */
 .voice-recorder {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  background: var(--surface-dim);
   border: 1.5px solid rgba(217, 164, 65, 0.35);
   border-radius: var(--radius-xl);
   padding: var(--space-2xl) var(--space-xl);
@@ -549,7 +549,7 @@
 }
 
 .consent-card.selected .consent-card-radio {
-  border-color: #E06D44;
+  border-color: var(--primary);
   background: #E06D44;
 }
 
@@ -574,13 +574,13 @@
 .consent-card h4 {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #FAF8F5;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
 .consent-card p {
   font-size: 0.82rem;
-  color: #B4BDD4;
+  color: var(--text-muted);
   line-height: 1.45;
   margin: 0;
 }

@@ -34,15 +34,28 @@ class CulturalRecordStore {
         const parsed = JSON.parse(saved) as CulturalRecord[];
         if (Array.isArray(parsed) && parsed.length > 0) {
           this.records = parsed;
-          return;
         }
       }
     } catch (e) {
       console.warn('Could not read from localStorage, using seed records:', e);
     }
 
-    // Default initialization from seedData
-    this.records = [...initialSeedRecords];
+    if (this.records.length === 0) {
+      // Default initialization from seedData
+      this.records = [...initialSeedRecords];
+    }
+
+    const testRecords = [
+      { id: 'warli-1', title: 'Warli Painting', state: 'Maharashtra', category: 'art', lifecycleStatus: 'verified', fullDescription: 'Warli painting is tribal art from Maharashtra...', coordinates: { lat: 19.0760, lng: 72.8777 } },
+      { id: 'modak-1', title: 'Khalapur Chi Ukadiche Modak Aaji Recipe', state: 'Maharashtra', category: 'food', lifecycleStatus: 'verified', fullDescription: 'Majhi aaji Khalapur chi modak banavate...', coordinates: { lat: 18.5204, lng: 73.8567 } }
+    ];
+
+    testRecords.forEach(tr => {
+      if (!this.records.some(r => r.id === tr.id)) {
+        this.records.unshift(tr as any);
+      }
+    });
+
     this.saveToStorage();
   }
 

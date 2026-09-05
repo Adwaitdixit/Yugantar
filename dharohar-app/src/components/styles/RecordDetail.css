@@ -115,7 +115,7 @@
 
 /* Audio Player */
 .audio-player-section {
-  background: linear-gradient(135deg, var(--indigo-deep), #1a2332);
+  background: var(--surface-container);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   margin-bottom: var(--space-xl);
@@ -512,4 +512,128 @@
   .provenance-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ============================================================
+   LIGHT MODE OVERRIDES
+   ============================================================ */
+
+.light-mode .record-detail-modal {
+  background: var(--bg-canvas);
+  border-color: rgba(184, 134, 11, 0.4);
+  box-shadow: 0 10px 40px rgba(44, 32, 22, 0.15);
+}
+
+.light-mode .record-detail-hero::before {
+  background: radial-gradient(circle at 80% 30%, rgba(184, 134, 11, 0.15), transparent 60%),
+              radial-gradient(circle at 20% 70%, rgba(184, 74, 40, 0.15), transparent 60%);
+}
+
+.light-mode .record-detail-hero .close-btn {
+  background: var(--surface-bright);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+}
+
+.light-mode .record-detail-hero .close-btn:hover {
+  background: var(--primary-dark);
+  color: #FDFBF7;
+}
+
+.light-mode .detail-title {
+  color: var(--text-primary);
+}
+
+.light-mode .detail-type-badge {
+  background: rgba(184, 134, 11, 0.1);
+  color: var(--primary-dark);
+  border-color: rgba(184, 134, 11, 0.3);
+}
+
+.light-mode .detail-nav {
+  border-color: var(--border-light);
+}
+
+.light-mode .detail-nav-item {
+  color: var(--text-muted);
+}
+
+.light-mode .detail-nav-item:hover {
+  color: var(--text-primary);
+}
+
+.light-mode .detail-nav-item.active {
+  color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.light-mode .section-title {
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+.light-mode .detail-about p {
+  color: var(--text-primary);
+}
+
+.light-mode .metadata-grid {
+  background: var(--surface);
+  border-color: var(--border-medium);
+}
+
+.light-mode .meta-label {
+  color: var(--text-muted);
+}
+
+.light-mode .meta-value {
+  color: var(--text-primary);
+}
+
+.light-mode .provenance-grid {
+  background: var(--surface);
+  border-color: var(--border-medium);
+}
+
+.light-mode .provenance-step {
+  border-color: var(--border-light);
+}
+
+.light-mode .provenance-icon {
+  background: var(--surface-bright);
+  border-color: var(--border-medium);
+  color: var(--primary-dark);
+}
+
+.light-mode .provenance-icon.success {
+  color: var(--emerald-dark);
+}
+
+.light-mode .step-details h4 {
+  color: var(--text-primary);
+}
+
+.light-mode .step-details p {
+  color: var(--text-muted);
+}
+
+.light-mode .timeline-detail-drawer {
+  background: var(--surface-bright);
+  border-color: var(--border-medium);
+}
+
+.light-mode .drawer-stage-badge {
+  color: var(--primary-dark);
+}
+
+.light-mode .drawer-actor-date {
+  color: var(--text-muted);
+}
+
+.light-mode .drawer-description {
+  color: var(--text-primary);
+}
+
+.light-mode .ethical-governance-banner {
+  background: rgba(184, 134, 11, 0.05);
+  border-color: rgba(184, 134, 11, 0.2);
 }

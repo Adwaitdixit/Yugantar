@@ -3,9 +3,11 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   Compass, Map, Mic, Cpu, ShieldCheck, ClipboardCheck,
   Menu, X, Wifi, WifiOff, LogIn, LogOut, User as UserIcon,
-  Shield, ChevronDown, BookOpen, UserCheck, Camera
+  Shield, ChevronDown, BookOpen, UserCheck, Camera, Sun, Moon
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from '../contexts/I18nContext';
+import { languageNames, type LanguageKey } from '../locales/translations';
 import UserProfileModal from './UserProfileModal';
 import './styles/Header.css';
 
@@ -14,6 +16,8 @@ interface HeaderProps {
   onToggleConnectivity: () => void;
   pendingSyncCount: number;
   onOpenAuth: () => void;
+  theme: 'dark' | 'light';
+  onToggleTheme: () => void;
 }
 
 export default function Header({
@@ -21,14 +25,19 @@ export default function Header({
   onToggleConnectivity,
   pendingSyncCount,
   onOpenAuth,
+  theme,
+  onToggleTheme,
 }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const langMenuRef = useRef<HTMLDivElement>(null);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const { user, role, isReviewer, isExpert, isAdmin, signOut } = useAuth();
+  const { t, language, setLanguage } = useTranslation();
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -36,17 +45,21 @@ export default function Header({
       if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
         setUserMenuOpen(false);
       }
+      if (langMenuRef.current && !langMenuRef.current.contains(e.target as Node)) {
+        setLangMenuOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const navItems = [
-    { to: '/', icon: <Compass size={16} />, label: 'Explore', show: true },
-    { to: '/map', icon: <Map size={16} />, label: 'Heritage Map', show: true },
-    { to: '/contribute', icon: <Mic size={16} />, label: 'Contribute', show: true },
-    { to: '/lens', icon: <Camera size={16} />, label: 'Heritage Lens', show: true },
-    { to: '/ai-pipeline', icon: <Cpu size={16} />, label: 'AI Pipeline', show: true },
+    { to: '/', icon: <Compass size={16} />, label: t('nav.explore'), show: true },
+    { to: '/map', icon: <Map size={16} />, label: t('nav.heritageMap'), show: true },
+    { to: '/contribute', icon: <Mic size={16} />, label: t('nav.contribute'), show: true },
+    { to: '/lens', icon: <Camera size={16} />, label: t('nav.heritageLens'), show: true },
+    { to: '/ai-pipeline', icon: <Cpu size={16} />, label: 'SATYA VERIFICATION', show: true },
+    { to: '/about', icon: <BookOpen size={16} />, label: t('nav.aboutUs'), show: true },
     { to: '/verification', icon: <ShieldCheck size={16} />, label: 'Verification', show: isExpert || isAdmin },
     { to: '/reviewer', icon: <ClipboardCheck size={16} />, label: 'Reviewer', show: isReviewer },
     { to: '/admin', icon: <Shield size={16} />, label: 'Admin', show: isAdmin },
@@ -112,6 +125,97 @@ export default function Header({
           </nav>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Theme Toggle */}
+            <button
+              onClick={onToggleTheme}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: 'var(--surface-container)',
+                border: '1px solid var(--border-light)',
+                color: 'var(--text-primary)',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            >
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+
+            {/* Language Selector */}
+            <div ref={langMenuRef} style={{ position: 'relative' }}>
+              <button
+                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '6px 10px',
+                  borderRadius: '16px',
+                  background: 'var(--surface-container)',
+                  border: '1px solid var(--border-light)',
+                  color: 'var(--text-primary)',
+                  cursor: 'pointer',
+                  fontSize: '0.85rem',
+                  fontWeight: 600
+                }}
+                aria-label="Select Language"
+              >
+                🌐 {language.toUpperCase()} <ChevronDown size={14} style={{ color: 'var(--text-muted)', transition: 'transform 0.2s', transform: langMenuOpen ? 'rotate(180deg)' : 'none' }} />
+              </button>
+
+              {langMenuOpen && (
+                <div className="page-enter" style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 8px)',
+                  right: 0,
+                  width: '180px',
+                  maxHeight: '350px',
+                  overflowY: 'auto',
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border-gold)',
+                  borderRadius: '12px',
+                  boxShadow: 'var(--shadow-lg)',
+                  padding: '8px',
+                  zIndex: 1000,
+                  backdropFilter: 'blur(12px)',
+                }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', padding: '4px 8px', marginBottom: '4px' }}>
+                    Choose Language
+                  </div>
+                  {(Object.entries(languageNames) as [LanguageKey, string][]).map(([key, name]) => (
+                    <button
+                      key={key}
+                      onClick={() => { setLanguage(key); setLangMenuOpen(false); }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        gap: '8px',
+                        width: '100%',
+                        padding: '8px 12px',
+                        background: language === key ? 'var(--surface-bright)' : 'transparent',
+                        border: 'none',
+                        borderRadius: '6px',
+                        color: language === key ? 'var(--primary)' : 'var(--text-primary)',
+                        cursor: 'pointer',
+                        fontSize: '0.9rem',
+                        fontWeight: language === key ? 600 : 400,
+                        textAlign: 'left'
+                      }}
+                    >
+                      <span style={{ width: '14px', display: 'inline-block' }}>{language === key ? '✓' : ''}</span>
+                      <span>🇮🇳 {name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Connectivity Status Indicator */}
             <button
               className={`connectivity-pill ${isOnline ? 'online' : 'offline'}`}
@@ -121,7 +225,7 @@ export default function Header({
             >
               <span className={`status-dot ${isOnline ? 'online' : 'offline'}`} />
               {isOnline ? <Wifi size={14} /> : <WifiOff size={14} />}
-              <span className="connectivity-text">{isOnline ? 'Online' : 'Offline'}</span>
+              <span className="connectivity-text">{isOnline ? t('nav.online') : t('nav.offline')}</span>
               {pendingSyncCount > 0 && (
                 <span className="sync-badge">{pendingSyncCount}</span>
               )}
@@ -164,10 +268,10 @@ export default function Header({
                     top: 'calc(100% + 8px)',
                     right: 0,
                     width: '260px',
-                    background: 'linear-gradient(165deg, rgba(17, 24, 39, 0.98) 0%, rgba(9, 13, 22, 0.99) 100%)',
-                    border: '1px solid rgba(229, 195, 101, 0.35)',
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border-gold)',
                     borderRadius: '12px',
-                    boxShadow: '0 16px 36px rgba(0, 0, 0, 0.7)',
+                    boxShadow: 'var(--shadow-lg)',
                     padding: '12px',
                     zIndex: 1000,
                     backdropFilter: 'blur(12px)',
@@ -175,17 +279,17 @@ export default function Header({
                     {/* User Header Info */}
                     <div style={{
                       padding: '8px 10px 12px',
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                      borderBottom: '1px solid var(--border-light)',
                       marginBottom: '8px',
                     }}>
-                      <div style={{ fontSize: '0.84rem', fontWeight: 600, color: '#FAF8F5', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {user.email}
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                         <span className="badge badge-gold" style={{ fontSize: '0.66rem', padding: '1px 6px' }}>
                           {getRoleBadgeLabel(role)}
                         </span>
-                        <span style={{ fontSize: '0.7rem', color: '#B4BDD4', fontFamily: 'var(--font-mono)' }}>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
                           ID: {user.id.substring(0, 8)}...
                         </span>
                       </div>
@@ -199,7 +303,7 @@ export default function Header({
                         id="menu-open-profile"
                         onClick={() => { setUserMenuOpen(false); setProfileModalOpen(true); }}
                       >
-                        <UserCheck size={14} style={{ color: '#E5C365' }} />
+                        <UserCheck size={14} style={{ color: 'var(--gold-light)' }} />
                         <span>Profile Details</span>
                       </button>
 
@@ -209,7 +313,7 @@ export default function Header({
                         id="menu-my-contributions"
                         onClick={handleOpenMyContributions}
                       >
-                        <BookOpen size={14} style={{ color: '#E06D44' }} />
+                        <BookOpen size={14} style={{ color: 'var(--primary)' }} />
                         <span>My Contributions</span>
                       </button>
 
@@ -219,7 +323,7 @@ export default function Header({
                           className="header-dropdown-item"
                           onClick={() => { setUserMenuOpen(false); navigate('/reviewer'); }}
                         >
-                          <ClipboardCheck size={14} style={{ color: '#E5C365' }} />
+                          <ClipboardCheck size={14} style={{ color: 'var(--gold-light)' }} />
                           <span>Reviewer Console</span>
                         </button>
                       )}
@@ -230,12 +334,12 @@ export default function Header({
                           className="header-dropdown-item"
                           onClick={() => { setUserMenuOpen(false); navigate('/admin'); }}
                         >
-                          <Shield size={14} style={{ color: '#E06D44' }} />
+                          <Shield size={14} style={{ color: 'var(--primary)' }} />
                           <span>Admin Console</span>
                         </button>
                       )}
 
-                      <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', margin: '4px 0' }} />
+                      <div style={{ borderTop: '1px solid var(--border-light)', margin: '4px 0' }} />
 
                       <button
                         type="button"
@@ -243,7 +347,7 @@ export default function Header({
                         id="menu-logout-btn"
                         onClick={handleLogout}
                       >
-                        <LogOut size={14} style={{ color: '#F87171' }} />
+                        <LogOut size={14} style={{ color: 'var(--error)' }} />
                         <span>Log Out</span>
                       </button>
                     </div>
@@ -258,7 +362,7 @@ export default function Header({
                 id="header-signin-button"
               >
                 <LogIn size={14} />
-                <span>Sign In</span>
+                <span>{t('nav.signIn')}</span>
               </button>
             )}
 

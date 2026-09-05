@@ -11,8 +11,10 @@ import ReviewerConsole from './components/ReviewerConsole';
 import AdminConsole from './components/AdminConsole';
 import ProtectedRoute from './components/ProtectedRoute';
 import HeritageLens from './components/HeritageLens/HeritageLens';
+import AboutUs from './components/AboutUs';
 import AuthModal, { type AuthIntent } from './components/AuthModal';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { I18nProvider, useTranslation } from './contexts/I18nContext';
 import type { CulturalRecord } from './data/types';
 import { culturalRecords } from './data/seedData';
 import { culturalStore } from './data/culturalStore';
@@ -21,10 +23,28 @@ import './index.css';
 function AppContent() {
   const { user, isReviewer } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [isOnline, setIsOnline] = useState(true);
   const [pendingSyncCount, setPendingSyncCount] = useState(2);
   const [selectedRecord, setSelectedRecord] = useState<CulturalRecord | null>(null);
+
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    return (localStorage.getItem('theme') as 'dark' | 'light') || 'dark';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    if (theme === 'light') {
+      document.documentElement.classList.add('light-mode');
+    } else {
+      document.documentElement.classList.remove('light-mode');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   useEffect(() => {
     culturalStore.sanitizeForUser(user?.email, user?.id, isReviewer);
@@ -87,6 +107,8 @@ function AppContent() {
         onToggleConnectivity={handleToggleConnectivity}
         pendingSyncCount={pendingSyncCount}
         onOpenAuth={() => handleOpenAuth('general')}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       <main>
@@ -115,6 +137,7 @@ function AppContent() {
           <Route path="/pipeline" element={<AIPipelineVisualizer />} />
           <Route path="/lens" element={<HeritageLens />} />
           <Route path="/heritage-lens" element={<HeritageLens />} />
+          <Route path="/about" element={<AboutUs />} />
           <Route
             path="/verification"
             element={
@@ -160,10 +183,10 @@ function AppContent() {
 
       {/* Stitch Institutional Footer */}
       <footer style={{
-        background: '#05080E',
-        borderTop: '1px solid rgba(255,255,255,0.1)',
+        background: 'var(--surface-container-low)',
+        borderTop: '1px solid var(--border-light)',
         padding: '64px 0 32px',
-        color: '#FAF8F5',
+        color: 'var(--text-primary)',
       }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
           <div style={{
@@ -171,7 +194,7 @@ function AppContent() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '32px',
             paddingBottom: '40px',
-            borderBottom: '1px solid rgba(255,255,255,0.1)',
+            borderBottom: '1px solid var(--border-light)',
           }}>
             {/* Col 1: Brand */}
             <div>
@@ -179,22 +202,22 @@ function AppContent() {
                 <span style={{ fontSize: '1.2rem' }}>🏛️</span>
                 <div>
                   <span style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', fontWeight: 700 }}>Dharohar Setu</span>
-                  <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem', color: '#E5C365' }}>धरोहर सेतु</span>
+                  <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem', color: 'var(--gold-light)' }}>धरोहर सेतु</span>
                 </div>
               </div>
-              <p style={{ fontSize: '0.78rem', color: '#B4BDD4', lineHeight: 1.6 }}>
-                National Geocartographic Repository &amp; Living Cultural Knowledge Graph for Tangible &amp; Intangible Heritage.
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                {t('footer.nationalRepository')}
               </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: 'rgba(250,248,245,0.7)', marginTop: 8 }}>
-                <span style={{ color: '#E06D44' }}>📍</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: 8 }}>
+                <span style={{ color: 'var(--primary)' }}>📍</span>
                 20.5937° N, 78.9629° E · Bharat
               </div>
             </div>
 
             {/* Col 2: Institutional Partners */}
             <div>
-              <h4 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '2px', color: '#E5C365', marginBottom: 12, fontWeight: 600 }}>Institutional Partners</h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.78rem', color: '#B4BDD4', lineHeight: 2 }}>
+              <h4 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--gold-light)', marginBottom: 12, fontWeight: 600 }}>{t('footer.institutionalPartners')}</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 2 }}>
                 <li>Indira Gandhi National Centre for the Arts</li>
                 <li>Archaeological Survey of India (ASI)</li>
                 <li>Ministry of Culture, GoI</li>
@@ -205,8 +228,8 @@ function AppContent() {
 
             {/* Col 3: Living Infrastructure */}
             <div>
-              <h4 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '2px', color: '#E5C365', marginBottom: 12, fontWeight: 600 }}>Living Infrastructure</h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: '#B4BDD4', lineHeight: 2.2 }}>
+              <h4 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--gold-light)', marginBottom: 12, fontWeight: 600 }}>{t('footer.livingInfrastructure')}</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: 'var(--text-muted)', lineHeight: 2.2 }}>
                 {[
                   `${culturalRecords.length}+ Catalogued Traditions`,
                   '22 Scheduled Indic Languages',
@@ -214,7 +237,7 @@ function AppContent() {
                   'Spatial Graph Vector Bindings',
                 ].map((text) => (
                   <li key={text} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#2DD4BF', flexShrink: 0 }} />
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--emerald)', flexShrink: 0 }} />
                     {text}
                   </li>
                 ))}
@@ -223,21 +246,21 @@ function AppContent() {
 
             {/* Col 4: Cultural Commons */}
             <div>
-              <h4 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '2px', color: '#E5C365', marginBottom: 12, fontWeight: 600 }}>Cultural Commons</h4>
-              <p style={{ fontSize: '0.78rem', color: '#B4BDD4', lineHeight: 1.6 }}>
-                All records and geographical entries are released under ethical cultural commons protocols safeguarding indigenous intellectual property rights.
+              <h4 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--gold-light)', marginBottom: 12, fontWeight: 600 }}>{t('footer.culturalCommons')}</h4>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                {t('footer.rightsStatement')}
               </p>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 6, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', color: '#E5C365', marginTop: 12, textTransform: 'uppercase', letterSpacing: '1px' }}>
-                PUBLIC KNOWLEDGE ARCHIVE
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 6, background: 'var(--surface-bright)', border: '1px solid var(--border-light)', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', color: 'var(--gold-light)', marginTop: 12, textTransform: 'uppercase', letterSpacing: '1px' }}>
+                {t('footer.publicArchive')}
               </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16, paddingTop: 24, fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', color: 'rgba(180,189,212,0.7)' }}>
-            <p style={{ margin: 0, color: 'rgba(180,189,212,0.7)' }}>© 2026 Dharohar Setu · National Living Cultural Heritage Repository</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16, paddingTop: 24, fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', color: 'var(--text-dim)' }}>
+            <p style={{ margin: 0, color: 'var(--text-dim)' }}>{t('footer.copyright')}</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-              <span style={{ color: '#E06D44', fontWeight: 600 }}>Preserve Unbroken Memory</span>
+              <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{t('footer.preserveMemory')}</span>
             </div>
           </div>
         </div>
@@ -249,9 +272,11 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
+      <I18nProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </I18nProvider>
     </BrowserRouter>
   );
 }

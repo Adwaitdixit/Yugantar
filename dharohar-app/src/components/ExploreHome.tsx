@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useCulturalRecords } from '../data/culturalStore';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from '../contexts/I18nContext';
 import { CATEGORY_CONFIG, VERIFICATION_CONFIG, type RecordCategory, type CulturalRecord } from '../data/types';
 import './styles/ExploreHome.css';
 
@@ -138,6 +139,7 @@ const CONTRIBUTION_JOURNEY_STEPS = [
 export default function ExploreHome({ onViewRecord, onOpenAuth }: ExploreHomeProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const culturalRecords = useCulturalRecords();
 
   const handleNavigateContribute = () => {
@@ -199,30 +201,28 @@ export default function ExploreHome({ onViewRecord, onOpenAuth }: ExploreHomePro
         <div className="hero-content">
           <div className="hero-badge">
             <span />
-            DISCOVER • PRESERVE • VERIFY IN REAL TIME
+            {t('hero.badge')}
           </div>
           <h1 className="hero-title">
-            DISCOVER INDIA’S <br />
-            <span className="accent">LIVING HERITAGE</span>
+            {t('hero.title')}
           </h1>
           <p className="hero-subtitle-native text-devanagari">
             धरोहर सेतु — भारत का जीवित सांस्कृतिक एवं धरोहर मानचित्र
           </p>
           <p className="hero-description">
-            India’s heritage is not frozen behind museum glass. It lives in the breath of oral chants,
-            the pressure of block-printer hands, woodsmoke in temple kitchens, and the unbroken memory of living communities.
+            {t('hero.subtitle')}
           </p>
           <div className="hero-actions">
             <button className="btn btn-primary btn-lg" onClick={() => navigate('/map')}>
               <Map size={20} />
-              Explore Heritage Map ↓
+              {t('common.explore')} {t('nav.heritageMap')} ↓
             </button>
             <button
               className="btn btn-secondary btn-lg"
               onClick={handleNavigateContribute}
             >
               <Mic size={20} />
-              Contribute Your Story
+              {t('contribute.contribute')}
             </button>
           </div>
 
@@ -470,7 +470,7 @@ export default function ExploreHome({ onViewRecord, onOpenAuth }: ExploreHomePro
                     background: hasImage
                       ? 'var(--surface-dim)'
                       : isIgnca
-                      ? 'linear-gradient(135deg, #C85A32, #090D16)'
+                      ? 'linear-gradient(135deg, var(--primary-dark), var(--bg-canvas))'
                       : `linear-gradient(135deg, ${CATEGORY_CONFIG[record.category].color}, var(--surface-dim))`
                   }}
                 >

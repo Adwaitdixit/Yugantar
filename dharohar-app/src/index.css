@@ -15,6 +15,12 @@
   --surface-container-high: #252A36;
   --surface-container-highest: #303541;
 
+  /* ── Overlays & Scrims ── */
+  --bg-overlay: rgba(9, 13, 22, 0.85);
+  --bg-hero-scrim: rgba(9, 13, 22, 0.7);
+  --bg-chip: rgba(19, 27, 46, 0.75);
+  --bg-badge: rgba(9, 13, 22, 0.85);
+
   /* ── Primary: Terracotta & Saffron Rust ── */
   --primary: #E06D44;
   --primary-dark: #C85A32;
@@ -136,6 +142,110 @@
   --z-modal-backdrop: 300;
   --z-modal: 400;
   --z-toast: 500;
+}
+
+/* ---------- Light Mode (Heritage Parchment) ---------- */
+.light-mode {
+  /* ── Canvas & Surface Tiers ── */
+  --bg-canvas: #EADDCD;
+  --surface-dim: #DDC9B4;
+  --surface: #F0E6D8;
+  --surface-bright: #F5EDE1;
+  --surface-container: #DDC9B4;
+  --surface-container-low: #EADDCD;
+  --surface-container-high: #CDB79D;
+  --surface-container-highest: #BC9F84;
+
+  /* ── Overlays & Scrims ── */
+  --bg-overlay: rgba(251, 248, 241, 0.85);
+  --bg-hero-scrim: rgba(244, 239, 230, 0.7);
+  --bg-chip: rgba(232, 223, 208, 0.75);
+  --bg-badge: rgba(251, 248, 241, 0.85);
+
+  /* ── Primary: Terracotta & Saffron Rust ── */
+  --primary: #B84A28;
+  --primary-dark: #8E371C;
+  --primary-light: #C85A32;
+  --primary-glow: rgba(184, 74, 40, 0.15);
+
+  /* ── Accent: Antique Gold & Burnished Brass ── */
+  --gold: #B8860B;
+  --gold-light: #DAA520;
+  --gold-dark: #8B6508;
+  --gold-glow: rgba(184, 134, 11, 0.15);
+
+  /* ── Emerald: Verification & Sacred Nodes ── */
+  --emerald: #2E8B57;
+  --emerald-dark: #236B43;
+  --emerald-glow: rgba(46, 139, 87, 0.15);
+
+  /* ── Lapis: Community Contributions ── */
+  --lapis: #2774AE;
+  --lapis-glow: rgba(39, 116, 174, 0.15);
+
+  /* ── Error / Danger ── */
+  --error: #B22222;
+  --error-container: #F8D7DA;
+
+  /* ── Text ── */
+  --text-primary: #2C2016;
+  --text-muted: #5C4033;
+  --text-dim: rgba(92, 64, 51, 0.6);
+  --text-on-primary: #FDFBF7;
+
+  /* ── Borders & Outlines ── */
+  --border-light: rgba(92, 64, 51, 0.12);
+  --border-medium: rgba(92, 64, 51, 0.25);
+  --border-gold: rgba(184, 134, 11, 0.35);
+  --border-gold-active: rgba(184, 134, 11, 0.60);
+  --border-terracotta: rgba(184, 74, 40, 0.35);
+  
+  /* ── Shadows (softer for light mode) ── */
+  --shadow-sm: 0 2px 4px rgba(44, 32, 22, 0.08);
+  --shadow-md: 0 4px 12px rgba(44, 32, 22, 0.06);
+  --shadow-lg: 0 12px 24px rgba(44, 32, 22, 0.05);
+  --shadow-xl: 0 20px 40px rgba(44, 32, 22, 0.04);
+
+  /* ── Legacy Compatibility Aliases Override for Light Mode ── */
+  --terracotta: var(--primary);
+  --terracotta-light: var(--primary-light);
+  --terracotta-dark: var(--primary-dark);
+  --indigo: var(--surface);
+  --indigo-deep: var(--bg-canvas);
+  --indigo-light: var(--surface-bright);
+  --turmeric: var(--gold);
+  --turmeric-light: var(--gold-light);
+  --turmeric-dark: var(--gold-dark);
+  --madder: var(--error);
+  --madder-light: var(--error-container);
+  
+  /* Invert light colors to dark for readability */
+  --ivory: var(--text-primary);
+  --ivory-warm: var(--text-muted);
+  --ivory-dark: var(--text-muted);
+  --slate: var(--text-primary);
+  --slate-light: var(--text-muted);
+  
+  --sage: var(--emerald);
+  --sage-light: var(--emerald-glow);
+  --sage-dark: var(--emerald-dark);
+  
+  --bg-primary: var(--bg-canvas);
+  --bg-secondary: var(--surface-dim);
+  --bg-card: var(--surface);
+  --bg-dark: var(--bg-canvas);
+  --text-secondary: var(--text-muted);
+  --text-on-dark: var(--text-primary);
+}
+
+/* Background texture and radial gradients for light mode only to simulate antique parchment */
+.light-mode body {
+  background-color: var(--bg-canvas);
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(218, 165, 32, 0.03) 0%, transparent 60%),
+    radial-gradient(ellipse at 100% 100%, rgba(184, 74, 40, 0.03) 0%, transparent 50%),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/></svg>');
+  background-attachment: fixed;
 }
 
 /* ---------- Reset & Base ---------- */
@@ -581,4 +691,98 @@ img, video {
   .container {
     padding: 0 var(--space-md);
   }
+}
+
+/* ============================================================
+   LIGHT MODE: TYPOGRAPHY, CARDS & MOTIFS
+   ============================================================ */
+
+/* Typography Overrides */
+.light-mode h1, 
+.light-mode h2, 
+.light-mode h3 {
+  color: var(--text-primary);
+}
+
+.light-mode .text-muted {
+  color: var(--text-muted);
+}
+
+/* Archival Cards */
+.light-mode .card,
+.light-mode .card-flat,
+.light-mode .card-glass {
+  background: var(--surface);
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 4px 16px rgba(44, 32, 22, 0.05);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-radius: var(--radius-md); /* Less rounded for archival feel */
+}
+
+.light-mode .card:hover {
+  border-color: var(--border-terracotta);
+  box-shadow: 0 8px 24px rgba(44, 32, 22, 0.08);
+  transform: translateY(-3px);
+}
+
+.light-mode .premium-glass {
+  background: rgba(251, 248, 241, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+}
+
+/* Heritage Separator */
+.heritage-separator {
+  display: none;
+}
+
+.light-mode .heritage-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px auto 24px;
+  color: var(--gold);
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.light-mode .heritage-separator::before,
+.light-mode .heritage-separator::after {
+  content: '';
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+/* Base Form Elements in Light Mode */
+.light-mode .input,
+.light-mode .textarea,
+.light-mode .select {
+  background: var(--bg-canvas);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+}
+
+.light-mode .input:focus,
+.light-mode .textarea:focus,
+.light-mode .select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(184, 74, 40, 0.1);
+}
+
+/* Button & Nav Link Overrides for Contrast in Light Mode */
+.light-mode .btn-primary {
+  color: #FDFBF7; /* White/Cream text on terracotta for high contrast */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .btn-secondary:hover {
+  color: var(--primary-dark);
+}
+
+.light-mode .nav-link:hover {
+  background: rgba(44, 32, 22, 0.08); /* Dark tint instead of white tint */
 }

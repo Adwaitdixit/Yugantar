@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Check, Cpu, RefreshCw, ArrowDown, Download, ArrowRight as ArrowRightIcon, MapPin, ChevronDown, FileText, Globe, Key, List, Database } from 'lucide-react';
+import { Database, Cpu, Globe, FileText, ArrowRight, RefreshCw, ArrowDown, Download, MapPin, ChevronDown, List, Key, Play, Check } from 'lucide-react';
 import { processCulturalTextWithGemini } from '../services/geminiService';
 import type { GeminiCulturalAnalysis } from '../data/types';
 import { culturalStore } from '../data/culturalStore';
+import { useTranslation } from '../contexts/I18nContext';
 import './styles/AIPipeline.css';
 
 interface PipelineStage {
@@ -33,6 +34,7 @@ const PRESET_SAMPLES = [
 ];
 
 export default function AIPipelineVisualizer() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [selectedRecordId, setSelectedRecordId] = useState<string>('');
@@ -141,7 +143,7 @@ export default function AIPipelineVisualizer() {
                 <span className="io-subtext">Community narrative</span>
               </div>
             </div>
-            <div className="io-arrow"><ArrowRightIcon size={20} /></div>
+            <div className="io-arrow"><ArrowRight size={20} /></div>
             <div className="io-column">
               <div className="io-label">AI PROCESS</div>
               <div className="io-process">
@@ -149,7 +151,7 @@ export default function AIPipelineVisualizer() {
                 <span>Text Sanitization</span>
               </div>
             </div>
-            <div className="io-arrow"><ArrowRightIcon size={20} /></div>
+            <div className="io-arrow"><ArrowRight size={20} /></div>
             <div className="io-column">
               <div className="io-label">OUTPUT</div>
               <div className="io-box success">
@@ -171,7 +173,7 @@ export default function AIPipelineVisualizer() {
                 <strong>Testimony Record</strong>
               </div>
             </div>
-            <div className="io-arrow"><ArrowRightIcon size={20} /></div>
+            <div className="io-arrow"><ArrowRight size={20} /></div>
             <div className="io-column">
               <div className="io-label">AI PROCESS</div>
               <div className="io-process">
@@ -179,7 +181,7 @@ export default function AIPipelineVisualizer() {
                 <span>Dialect Analysis</span>
               </div>
             </div>
-            <div className="io-arrow"><ArrowRightIcon size={20} /></div>
+            <div className="io-arrow"><ArrowRight size={20} /></div>
             <div className="io-column">
               <div className="io-label">OUTPUT</div>
               <div className="io-box success">
@@ -201,7 +203,7 @@ export default function AIPipelineVisualizer() {
                  <strong>Multilingual Transcript</strong>
               </div>
             </div>
-            <div className="io-arrow"><ArrowRightIcon size={20} /></div>
+            <div className="io-arrow"><ArrowRight size={20} /></div>
             <div className="io-column">
               <div className="io-label">AI PROCESS</div>
               <div className="io-process">
@@ -209,7 +211,7 @@ export default function AIPipelineVisualizer() {
                 <span>Practice Identification</span>
               </div>
             </div>
-            <div className="io-arrow"><ArrowRightIcon size={20} /></div>
+            <div className="io-arrow"><ArrowRight size={20} /></div>
             <div className="io-column output-grow">
               <div className="io-label">OUTPUT</div>
               <div className="io-box success">
@@ -233,7 +235,7 @@ export default function AIPipelineVisualizer() {
                 <strong>Extracted Entities</strong>
               </div>
             </div>
-            <div className="io-arrow"><ArrowRightIcon size={20} /></div>
+            <div className="io-arrow"><ArrowRight size={20} /></div>
             <div className="io-column">
               <div className="io-label">AI PROCESS</div>
               <div className="io-process">
@@ -241,7 +243,7 @@ export default function AIPipelineVisualizer() {
                 <span>Taxonomy Classification</span>
               </div>
             </div>
-            <div className="io-arrow"><ArrowRightIcon size={20} /></div>
+            <div className="io-arrow"><ArrowRight size={20} /></div>
             <div className="io-column output-grow">
               <div className="io-label">OUTPUT</div>
               <div className="io-box success">
@@ -292,17 +294,17 @@ export default function AIPipelineVisualizer() {
                     <span className="cell-label">CLAIM</span>
                     <p>"{claim.claim}"</p>
                   </div>
-                  <div className="s6-arrow"><ArrowRightIcon size={16} /></div>
+                  <div className="s6-arrow"><ArrowRight size={16} /></div>
                   <div className="s6-cell s6-evidence">
                     <span className="cell-label">EVIDENCE REQUIRED</span>
                     <p>{claim.evidenceNeeded ? 'Archival / Documentary' : 'Oral / Community'}</p>
                   </div>
-                  <div className="s6-arrow"><ArrowRightIcon size={16} /></div>
+                  <div className="s6-arrow"><ArrowRight size={16} /></div>
                   <div className="s6-cell s6-provenance">
                     <span className="cell-label">PROVENANCE</span>
                     <p>{claim.reasoning}</p>
                   </div>
-                  <div className="s6-arrow"><ArrowRightIcon size={16} /></div>
+                  <div className="s6-arrow"><ArrowRight size={16} /></div>
                   <div className="s6-cell s6-status">
                     <span className="cell-label">STATUS</span>
                     <span className={`badge ${getStatusBadgeClass(claim.status)}`}>{claim.status}</span>
@@ -368,7 +370,7 @@ export default function AIPipelineVisualizer() {
   return (
     <div className="ai-page page-enter" id="ai-pipeline-page">
       <div className="section-header" style={{ marginBottom: 'var(--space-xl)', textAlign: 'center' }}>
-        <h2 style={{ fontSize: '2rem', letterSpacing: '-0.5px' }}>AI Heritage Intelligence Pipeline</h2>
+        <h2 style={{ fontSize: '2rem', letterSpacing: '-0.5px' }}>{t('pipeline.aiPipeline')}</h2>
         <p style={{ color: 'var(--text-muted)', maxWidth: '650px', margin: '8px auto 0', fontSize: '1rem' }}>
           Transforms local community knowledge into structured, traceable, and archivable digital heritage records.
         </p>

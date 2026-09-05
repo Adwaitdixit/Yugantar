@@ -30,9 +30,8 @@
 .hero-section::before {
   content: '';
   position: absolute;
-  inset: 0;
   background:
-    radial-gradient(ellipse at center, transparent 20%, rgba(9, 13, 22, 0.7) 70%),
+    radial-gradient(ellipse at center, transparent 20%, var(--bg-hero-scrim) 70%),
     linear-gradient(to bottom, transparent 40%, var(--bg-canvas) 100%);
   z-index: 1;
   pointer-events: none;
@@ -52,7 +51,7 @@
   align-items: center;
   gap: 10px;
   padding: 8px 20px;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--bg-chip);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(212, 175, 55, 0.30);
   border-radius: var(--radius-round);
@@ -86,7 +85,7 @@
 }
 
 .hero-title .accent {
-  background: linear-gradient(135deg, #FFFDF8 20%, #E5C365 70%, #C89B2B 100%);
+  background: linear-gradient(135deg, var(--surface-bright) 20%, var(--gold-light) 70%, var(--gold-dark) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -519,7 +518,7 @@
   gap: 6px;
   padding: 6px 14px;
   border-radius: var(--radius-round);
-  background: rgba(19, 27, 46, 0.75);
+  background: var(--bg-chip);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-light);
   color: var(--text-primary);
@@ -610,7 +609,7 @@
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--radius-round);
-  background: rgba(9, 13, 22, 0.85);
+  background: var(--bg-badge);
   backdrop-filter: blur(8px);
   color: var(--gold-light);
   border: 1px solid var(--border-gold);

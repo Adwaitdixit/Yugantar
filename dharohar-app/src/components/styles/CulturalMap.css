@@ -956,3 +956,116 @@
   border: 1px solid var(--error);
   color: var(--error);
 }
+
+/* ============================================================
+   LIGHT MODE OVERRIDES
+   ============================================================ */
+
+.light-mode .heritage-badge-pill {
+  background: rgba(184, 134, 11, 0.1);
+  border-color: rgba(184, 134, 11, 0.3);
+  color: var(--primary-dark);
+}
+
+.light-mode .heritage-map-header h2 {
+  color: var(--text-primary);
+}
+
+.light-mode .heritage-map-subtitle {
+  color: var(--text-muted);
+}
+
+.light-mode .map-controls-panel {
+  background: var(--surface-bright);
+  border-color: var(--border-medium);
+}
+
+.light-mode .map-search-input {
+  background: var(--bg-canvas);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+}
+
+.light-mode .map-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.light-mode .map-filter-btn {
+  background: var(--surface);
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.light-mode .map-filter-btn:hover {
+  border-color: var(--primary-dark);
+}
+
+.light-mode .map-filter-btn.active {
+  background: var(--primary-dark);
+  color: #FDFBF7;
+  border-color: var(--primary-dark);
+}
+
+.light-mode .map-dossier-panel {
+  background: var(--surface-bright);
+  border-color: var(--border-medium);
+}
+
+.light-mode .dossier-header {
+  border-bottom-color: var(--border-light);
+}
+
+.light-mode .dossier-header h3 {
+  color: var(--text-primary);
+}
+
+.light-mode .dossier-close-btn {
+  background: var(--surface);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+}
+
+.light-mode .dossier-close-btn:hover {
+  background: var(--primary-dark);
+  color: #FDFBF7;
+}
+
+.light-mode .dossier-content p {
+  color: var(--text-muted);
+}
+
+.light-mode .dossier-meta-item {
+  border-bottom-color: var(--border-light);
+}
+
+.light-mode .dossier-meta-label {
+  color: var(--text-muted);
+}
+
+.light-mode .dossier-meta-value {
+  color: var(--text-primary);
+}
+
+.light-mode .dossier-action-btn {
+  background: var(--primary-dark);
+  color: #FDFBF7;
+}
+
+.light-mode .dossier-action-btn:hover {
+  background: var(--primary);
+}
+
+.light-mode .map-legend {
+  background: var(--surface-bright);
+  border-color: var(--border-medium);
+}
+
+.light-mode .legend-section strong {
+  color: var(--text-primary);
+}
+
+.light-mode .legend-item {
+  color: var(--text-muted);
+}
+
+/* Leave map tiles unchanged per instructions */

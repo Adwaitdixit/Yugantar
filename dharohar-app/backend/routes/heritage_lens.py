@@ -92,7 +92,7 @@ async def analyze_monument(
 
     # 4. Call Gemini
     api_key = get_gemini_key()
-    gemini_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={api_key}"
+    gemini_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={api_key}"
     
     prompt = """
 You are a master architectural historian and heritage expert.

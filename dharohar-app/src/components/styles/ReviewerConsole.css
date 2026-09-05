@@ -144,7 +144,7 @@
 
 /* Media Panel */
 .media-preview {
-  background: linear-gradient(135deg, var(--indigo-deep), #1a2332);
+  background: var(--surface-container);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   margin-bottom: var(--space-lg);

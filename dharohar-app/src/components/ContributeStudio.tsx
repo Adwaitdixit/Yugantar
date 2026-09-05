@@ -2,14 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Mic, Square, Upload, Check, RefreshCw,
-  Play, Pause, FileAudio, Trash2, Image, AlertCircle, Sparkles, CheckCircle2, ArrowRight,
+  Play, Pause, FileAudio, Trash2, Image, AlertCircle,
   CloudUpload, Lock, Video, FileText, Search, X, ExternalLink, MapPin
 } from 'lucide-react';
 import { CATEGORY_CONFIG, CONSENT_CONFIG, type RecordCategory, type ConsentTier, type CulturalRecord } from '../data/types';
 import { culturalStore, useCulturalRecords } from '../data/culturalStore';
 import { resolveAccurateAudioDuration, formatAudioDuration, formatPlaybackTime } from '../utils/audioDuration';
 import { useAuth } from '../contexts/AuthContext';
-import { uploadAudioRecording, uploadVideoFile } from '../services/supabaseClient';
+import { useTranslation } from '../contexts/I18nContext';
+import { supabase, uploadAudioRecording, uploadVideoFile } from '../services/supabaseClient';
 import './styles/ContributeStudio.css';
 
 interface ContributeStudioProps {
@@ -31,9 +32,10 @@ interface UploadedFile {
 
 const DRAFT_STORAGE_KEY = 'dharohar_active_contribution_draft_v1';
 
-export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth }: ContributeStudioProps) {
+export default function ContributeStudio({ onRequireAuth }: ContributeStudioProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const allStoreRecords = useCulturalRecords();
 
   const [step, setStep] = useState(1);
@@ -98,7 +100,20 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
   const searchTimeoutRef = useRef<number | null>(null);
 
   // Last submitted record notice
-  const [justSubmittedId, setJustSubmittedId] = useState<string | null>(null);
+
+  // Auto-detect with navigator.geolocation
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCoordinates([position.coords.longitude, position.coords.latitude]);
+          console.log('[Geocoding] Auto-detected coords:', position.coords.latitude, position.coords.longitude);
+        },
+        (err) => console.warn('[Geocoding] Geolocation error:', err),
+        { enableHighAccuracy: true }
+      );
+    }
+  }, []);
 
   // References for MediaRecorder and Audio
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -178,10 +193,15 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
 
     searchTimeoutRef.current = window.setTimeout(async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/search?q=${encodeURIComponent(searchQuery)}`);
+        const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchQuery)}&format=json&origin=*`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        setSearchResults(data);
+        const mappedResults = data.query.search.map((item: any) => ({
+          title: item.title,
+          snippet: item.snippet.replace(/<\/?[^>]+(>|$)/g, ""),
+          url: `https://en.wikipedia.org/wiki/${encodeURIComponent(item.title)}`
+        }));
+        setSearchResults(mappedResults);
       } catch (err) {
         console.error('Search failed', err);
         setSearchResults([]);
@@ -710,114 +730,84 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
 
     setIsUploadingToSupabase(true);
     let finalAudioUrl = activeAudio?.url;
-    let finalVideoUrl = uploadedVideo?.url;
 
     if (captureMode === 'audio_record' || captureMode === 'audio_upload') {
       const audioPayload = activeAudio?.file ?? activeAudio?.blob;
       if (audioPayload) {
         try {
-          const uploadedUrl = await uploadAudioRecording(audioPayload, 'cultural_lore', user.id);
-          if (uploadedUrl) {
-            finalAudioUrl = uploadedUrl;
+          const timestamp = Date.now();
+          const ext = audioPayload.type.includes('ogg') ? 'ogg' : 'webm';
+          const filePath = `users/${user.id}/voice_${timestamp}.${ext}`;
+          
+          const { error } = await supabase.storage.from('lore-audio').upload(filePath, audioPayload, {
+            upsert: false,
+            contentType: audioPayload.type || 'audio/webm',
+          });
+          
+          if (!error) {
+            const { data: publicUrlData } = supabase.storage.from('lore-audio').getPublicUrl(filePath);
+            finalAudioUrl = publicUrlData.publicUrl;
+          } else {
+             console.error('[Supabase Storage] Upload error:', error.message);
           }
         } catch (err) {
-          console.warn('[ContributeStudio] Supabase storage upload notice:', err);
+          console.warn('[ContributeStudio] Supabase lore-audio upload notice:', err);
         }
       }
-    } else if (captureMode === 'video') {
-      const videoPayload = uploadedVideo?.file;
-      if (videoPayload) {
-        try {
-          const uploadedUrl = await uploadVideoFile(videoPayload, 'cultural_lore_video', user.id);
-          if (uploadedUrl) {
-            finalVideoUrl = uploadedUrl;
-          }
-        } catch (err) {
-          console.warn('[ContributeStudio] Supabase storage video upload notice:', err);
-        }
+    }
+
+    try {
+      const { error } = await supabase.from('living_lore').insert({
+        title: title.trim(),
+        category,
+        language: language.trim(),
+        district: district.trim() || undefined,
+        state: state.trim() || undefined,
+        lat: coordinates ? coordinates[1] : null,
+        lng: coordinates ? coordinates[0] : null,
+        audio_url: finalAudioUrl,
+        satya_score: 85,
+        short_description: contextNotes.trim(),
+        lifecycle_status: 'published'
+      });
+      
+      if (error) {
+        console.error('[Supabase] Insert Error:', error);
+      } else {
+        // Optimistic UI update: instantly add to store so map updates
+        const newRecordId = editingDraftId || culturalStore.generateId();
+        culturalStore.addContribution({
+          id: newRecordId,
+          title: title.trim(),
+          category,
+          mediaType: captureMode === 'audio_record' || captureMode === 'audio_upload' ? 'audio' : captureMode === 'video' ? 'video' : captureMode === 'photo' ? 'photo' : 'text',
+          originalLanguage: language.trim(),
+          state: state.trim(),
+          district: district.trim() || undefined,
+          fullDescription: contextNotes.trim() || `Field lore contributed in ${language} from ${state}.`,
+          shortDescription: contextNotes.trim() ? contextNotes.slice(0, 140) + '...' : `Contribution: ${title} (${language}, ${state}).`,
+          originalAudioUrl: finalAudioUrl,
+          lifecycleStatus: 'published',
+          contributor: user.email || 'Community Contributor',
+          coordinates: coordinates ? { lat: coordinates[1], lng: coordinates[0] } : undefined,
+          syncStatus: 'synced',
+          verificationStatus: 'unverified'
+        } as any, user.email, user.id);
       }
+    } catch (err) {
+       console.error('[Supabase] Error:', err);
     }
 
     setIsUploadingToSupabase(false);
 
-    let finalFullDescription = contextNotes.trim();
-    if (captureMode === 'text' && category !== 'traditional_recipe') {
-      finalFullDescription = writtenStory.trim() + (finalFullDescription ? `\n\nContext Notes:\n${finalFullDescription}` : '');
-    }
-
-    const newRecordId = editingDraftId || culturalStore.generateId();
-    const createdRecord = culturalStore.addContribution({
-      id: newRecordId,
-      title: title.trim(),
-      category,
-      mediaType: captureMode === 'audio_record' || captureMode === 'audio_upload' ? 'audio' : captureMode === 'video' ? 'video' : captureMode === 'photo' ? 'photo' : 'text',
-      originalLanguage: language.trim(),
-      dialect: dialect.trim() || undefined,
-      state: state.trim(),
-      district: district.trim() || undefined,
-      village: village.trim() || undefined,
-      community: community.trim() || undefined,
-      knowledgeHolder: knowledgeHolder.trim() || undefined,
-      fullDescription: finalFullDescription || `Field lore contributed in ${language} from ${state}.`,
-      shortDescription: contextNotes.trim() ? contextNotes.slice(0, 140) + '...' : `Contribution: ${title} (${language}, ${state}).`,
-      originalAudioUrl: captureMode === 'audio_record' || captureMode === 'audio_upload' ? finalAudioUrl : undefined,
-      audioDuration: activeAudio?.duration ?? undefined,
-      videoUrl: captureMode === 'video' ? finalVideoUrl : undefined,
-      recipeDetails: captureMode === 'text' && category === 'traditional_recipe' ? recipeData : undefined,
-      consentTier,
-      syncStatus: isOnline ? 'synced' : 'pending',
-      lifecycleStatus: 'submitted',
-      verificationStatus: 'unverified',
-      images: uploadedPhotos.map(p => p.url),
-      contributor: user.email || 'Community Contributor',
-      coordinates: coordinates ? { lat: coordinates[1], lng: coordinates[0] } : undefined,
-      externalReference: selectedReference ? {
-        sourceName: selectedReference.sourceName,
-        sourceUrl: selectedReference.sourceUrl,
-        sourceIdentifier: selectedReference.sourceIdentifier,
-        sourceType: selectedReference.sourceType,
-        retrievedAt: selectedReference.retrievedAt
-      } : undefined
-    }, user.email, user.id);
-
-    if (isOnline) {
-      culturalStore.syncRecord(createdRecord.id);
-    } else {
-      onAddPending();
-    }
-
     try {
       localStorage.removeItem(DRAFT_STORAGE_KEY);
-      console.log('[DraftPersistence] Cleared draft after successful submission:', createdRecord.id);
     } catch {
       // ignore
     }
 
-    setJustSubmittedId(createdRecord.id);
-    setEditingDraftId(null);
-
-    // Reset wizard
-    setStep(1);
-    setTitle('');
-    setLanguage('');
-    setDialect('');
-    setState('');
-    setDistrict('');
-    setVillage('');
-    setCommunity('');
-    setKnowledgeHolder('');
-    setContextNotes('');
-    setRecordingTime(0);
-    setIsRecording(false);
-    handleRemoveActiveAudio();
-    setUploadedVideo(null);
-    setWrittenStory('');
-    setRecipeData({ ingredients: [''], instructions: [''], preparationTime: '' });
-    setUploadedPhotos([]);
-    setSelectedReference(null);
-    setSearchQuery('');
-    setSearchResults([]);
-    setCoordinates(null);
+    // Redirect to map to see new pin
+    navigate('/map');
   };
 
   const handleSaveDraft = async () => {
@@ -1034,7 +1024,7 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
     <div className="contribute-page page-enter" id="contribute-page">
       <div className="contribute-header">
         <div className="ornament">🎙️</div>
-        <h2>Voice-First Field Studio & Cultural Lore Portal</h2>
+        <h2>{t('contribute.contribute')} - Field Studio</h2>
         <p style={{ color: 'var(--text-muted)', maxWidth: '620px', margin: '0 auto' }}>
           Preserve living traditions through real browser voice recordings or high-fidelity audio uploads with mandatory provenance attribution.
         </p>
@@ -1046,8 +1036,8 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
           maxWidth: '750px',
           margin: '0 auto var(--space-xl)',
           padding: '14px 20px',
-          background: 'linear-gradient(135deg, rgba(224, 109, 68, 0.12) 0%, rgba(13, 19, 31, 0.8) 100%)',
-          border: '1px solid rgba(224, 109, 68, 0.35)',
+          background: 'var(--surface-container)',
+          border: '1px solid var(--border-gold)',
           borderRadius: 'var(--radius-lg)',
           display: 'flex',
           alignItems: 'center',
@@ -1058,10 +1048,10 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ fontSize: '1.4rem' }}>🔐</span>
             <div>
-              <div style={{ fontWeight: 600, color: '#FAF8F5', fontSize: '0.9rem' }}>
+              <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>
                 Sign In with Email to Record &amp; Save Living Lore
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#B4BDD4' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                 Guest browsing active. Sign in to record microphone audio and save persistent records to the Supabase Cloud.
               </div>
             </div>
@@ -1080,8 +1070,8 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
           maxWidth: '750px',
           margin: '0 auto var(--space-lg)',
           padding: '8px 16px',
-          background: 'rgba(45, 212, 191, 0.08)',
-          border: '1px solid rgba(45, 212, 191, 0.25)',
+          background: 'var(--surface-container)',
+          border: '1px solid rgba(45, 212, 191, 0.3)',
           borderRadius: 'var(--radius-md)',
           display: 'flex',
           alignItems: 'center',
@@ -1090,13 +1080,13 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
           gap: '8px',
           fontSize: '0.76rem',
           fontFamily: 'var(--font-mono)',
-          color: '#5EEAD4',
+          color: 'var(--emerald)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#2DD4BF' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--emerald)' }} />
             <span>Contributor: <strong>{user.email}</strong></span>
           </div>
-          <span style={{ color: 'rgba(94, 234, 212, 0.85)' }}>☁️ Supabase Cloud Storage Connected</span>
+          <span style={{ color: 'var(--emerald)', fontWeight: 600 }}>☁️ Supabase Cloud Storage Connected</span>
         </div>
       )}
 
@@ -1117,42 +1107,6 @@ export default function ContributeStudio({ isOnline, onAddPending, onRequireAuth
         }}>
           <CloudUpload size={16} className="animate-pulse" />
           <span>Uploading voice recording to Supabase Cloud Storage...</span>
-        </div>
-      )}
-
-      {/* Success Banner when a record was just submitted */}
-      {justSubmittedId && (
-        <div style={{
-          maxWidth: '750px',
-          margin: '0 auto var(--space-xl)',
-          padding: 'var(--space-md) var(--space-lg)',
-          background: 'rgba(107, 142, 111, 0.12)',
-          border: '1.5px solid var(--sage)',
-          borderRadius: 'var(--radius-lg)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '12px',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <CheckCircle2 size={22} style={{ color: 'var(--sage-dark)' }} />
-            <div>
-              <div style={{ fontWeight: 700, color: 'var(--slate)', fontSize: '0.94rem' }}>
-                Contribution Created: <strong style={{ color: 'var(--terracotta)' }}>{justSubmittedId}</strong>
-              </div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                Persistent Cultural Record has entered the shared workflow.
-              </div>
-            </div>
-          </div>
-          <button
-            className="btn btn-sm btn-primary"
-            onClick={() => navigate('/pipeline')}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-          >
-            <Sparkles size={14} /> Open in AI Pipeline <ArrowRight size={14} />
-          </button>
         </div>
       )}
 

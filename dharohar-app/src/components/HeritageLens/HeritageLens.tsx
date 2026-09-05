@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Camera, Upload, RefreshCw, Box, Compass, Hammer, History, Info, Sparkles } from 'lucide-react';
+import { useTranslation } from '../../contexts/I18nContext';
 import './HeritageLens.css';
 
 interface LensAnalysis {
@@ -12,6 +13,7 @@ interface LensAnalysis {
 }
 
 export default function HeritageLens() {
+  const { t } = useTranslation();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -72,7 +74,7 @@ export default function HeritageLens() {
   return (
     <div className="lens-container">
       <div className="lens-header">
-        <h1><Sparkles className="lens-icon-main" /> Heritage Lens</h1>
+        <h1><Sparkles className="lens-icon-main" /> {t('lens.heritageLens')}</h1>
         <p>AI-assisted visual analysis of monuments and structures.</p>
       </div>
 

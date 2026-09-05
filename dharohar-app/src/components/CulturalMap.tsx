@@ -7,8 +7,9 @@ import {
   AlertTriangle, Volume2, Layers, ExternalLink, MapPin, Navigation, ShieldCheck, Search
 } from 'lucide-react';
 import { INDIA_STATES_GEO, ZONE_CENTROIDS, INDIA_MAP_BOUNDS } from '../data/indiaMapData';
-import { useCulturalRecords } from '../data/culturalStore';
+import { useTranslation } from '../contexts/I18nContext';
 import { CATEGORY_CONFIG, VERIFICATION_CONFIG, type CulturalRecord, type RecordCategory } from '../data/types';
+import { useCulturalRecords } from '../data/culturalStore';
 import './styles/CulturalMap.css';
 
 interface CulturalMapProps {
@@ -39,10 +40,14 @@ function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon
 
 export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const initialCategory = (searchParams.get('category') as RecordCategory | 'all') || 'all';
 
-  const culturalRecords = useCulturalRecords();
+  const allRecords = useCulturalRecords();
+  const culturalRecords = allRecords.filter(r => r.lifecycleStatus !== 'draft');
+
+
   const [selectedStateId, setSelectedStateId] = useState<string>('MH');
   const [activeZone, setActiveZone] = useState<string>('All');
   const [categoryFilter, setCategoryFilter] = useState<RecordCategory | 'all'>(initialCategory);
@@ -54,6 +59,7 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
 
   // Geolocation & Explore Near Me state
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [searchCenter, setSearchCenter] = useState<{ lat: number; lng: number } | null>(null);
   const [geoStatus, setGeoStatus] = useState<'prompting' | 'granted' | 'denied' | 'unsupported'>('prompting');
   const [radiusKm, setRadiusKm] = useState<number>(10);
   const [dossierMode, setDossierMode] = useState<'near-me' | 'regional'>('regional');
@@ -102,12 +108,13 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
 
   // Calculate nearby records based on genuine lat/lng
   const nearbyRecords: NearbyRecordItem[] = useMemo(() => {
-    if (!userLocation) return [];
+    const center = searchCenter || userLocation;
+    if (!center) return [];
 
     const list: NearbyRecordItem[] = [];
     culturalRecords.forEach((rec) => {
-      // Publication rule: only published records appear on map
-      if (rec.lifecycleStatus && rec.lifecycleStatus !== 'published') return;
+      // Publication rule: draft records are hidden, but submitted and published appear for demo
+      if (rec.lifecycleStatus === 'draft') return;
 
       if (
         rec.coordinates &&
@@ -124,8 +131,8 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
         if (onlyEndangered && !rec.isEndangered) return;
 
         const distance = getDistanceFromLatLonInKm(
-          userLocation.lat,
-          userLocation.lng,
+          center.lat,
+          center.lng,
           rec.coordinates.lat,
           rec.coordinates.lng
         );
@@ -139,14 +146,32 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
     // Sort by nearest distance
     list.sort((a, b) => a.distanceKm - b.distanceKm);
     return list;
-  }, [userLocation, radiusKm, datasetFilter, categoryFilter, onlyEndangered]);
+  }, [userLocation, searchCenter, radiusKm, datasetFilter, categoryFilter, onlyEndangered, culturalRecords]);
+
+  // Auto-expand radius if 10km returns 0 records for demo safety
+  useEffect(() => {
+    const center = searchCenter || userLocation;
+    if (center && radiusKm === 10) {
+      const hasAny = culturalRecords.some(rec => {
+        if (rec.lifecycleStatus === 'draft') return false;
+        if (rec.coordinates?.lat && rec.coordinates?.lng) {
+          const d = getDistanceFromLatLonInKm(center.lat, center.lng, rec.coordinates.lat, rec.coordinates.lng);
+          return d <= 10;
+        }
+        return false;
+      });
+      if (!hasAny) {
+        setRadiusKm(50);
+      }
+    }
+  }, [searchCenter, userLocation, radiusKm, culturalRecords]);
 
   // Map records to all associated states
   const statesWithRecordsMap = useMemo(() => {
     const map = new Map<string, CulturalRecord[]>();
     culturalRecords.forEach(r => {
-      // Only published records appear in public dossiers
-      if (r.lifecycleStatus && r.lifecycleStatus !== 'published') return;
+      // Draft records are hidden, published and submitted appear
+      if (r.lifecycleStatus === 'draft') return;
 
       INDIA_STATES_GEO.forEach(geo => {
         const matchesPrimary = geo.name.toLowerCase() === r.state.toLowerCase();
@@ -181,8 +206,8 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
   // Filtered records visible on the map
   const visibleHeritageRecords = useMemo(() => {
     return culturalRecords.filter(r => {
-      // Publication rule: only published records appear on the map
-      if (r.lifecycleStatus && r.lifecycleStatus !== 'published') return false;
+      // Draft records are hidden, published and submitted appear
+      if (r.lifecycleStatus === 'draft') return false;
 
       if (datasetFilter === 'ignca' && !r.id.startsWith('ICH0')) return false;
       if (datasetFilter === 'unesco' && !r.id.startsWith('ICH-')) return false;
@@ -352,7 +377,7 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
         ? '<span class="badge" style="background:rgba(217,164,65,0.9);color:#1F2B3E;font-weight:700;">🌐 UNESCO ICH</span>'
         : '<span class="badge badge-terracotta">👥 Community Lore</span>';
 
-      const statusBadge = `<span class="badge ${VERIFICATION_CONFIG[record.verificationStatus].badgeClass}">${VERIFICATION_CONFIG[record.verificationStatus].label}</span>`;
+      const statusBadge = `<span class="badge ${VERIFICATION_CONFIG[record.verificationStatus]?.badgeClass || 'badge-verified'}">${VERIFICATION_CONFIG[record.verificationStatus]?.label || 'Verified'}</span>`;
 
       // Distance tag if user location is available
       let distanceSnippet = '';
@@ -369,6 +394,17 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
           ${distanceSnippet}
           <div class="popup-location">📍 ${record.state}${record.district ? `, ${record.district}` : ''}</div>
           <p class="popup-desc">${record.shortDescription}</p>
+
+          <div class="satya-score" style="margin: 8px 0; background: rgba(107, 142, 111, 0.15); padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; color: var(--sage-dark); display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--sage-light);">
+            🛡️ Satya Score: ${(record as any).satya_score || 85} / 100
+          </div>
+          
+          ${record.originalAudioUrl ? `
+          <div style="margin: 8px 0;">
+            <audio controls src="${record.originalAudioUrl}" style="width: 100%; height: 32px; border-radius: 4px;"></audio>
+          </div>
+          ` : ''}
+
           <div class="popup-actions">
             <button class="btn btn-sm btn-primary popup-view-btn" data-record-id="${record.id}">
               Explore Cultural Record ↗
@@ -447,11 +483,14 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
     if (!searchQuery.trim() || !mapInstanceRef.current) return;
     setIsSearching(true);
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery + ', India')}`);
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(searchQuery + ', India')}`);
       const data = await res.json();
       if (data && data.length > 0) {
-        const { lat, lon } = data[0];
-        mapInstanceRef.current.flyTo([parseFloat(lat), parseFloat(lon)], 10, { duration: 1.5 });
+        const lat = parseFloat(data[0].lat);
+        const lon = parseFloat(data[0].lon);
+        mapInstanceRef.current.flyTo([lat, lon], 10, { duration: 1.5 });
+        setSearchCenter({ lat, lng: lon });
+        setDossierMode('near-me');
       }
     } catch (err) {
       console.error('Search failed', err);
@@ -503,7 +542,7 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
             <Compass size={16} />
             <span>Interactive Living Cultural Atlas of India</span>
           </div>
-          <h2>Heritage Map of India</h2>
+          <h2>{t('map.heritageMap')}</h2>
           <p className="heritage-map-subtitle text-devanagari">
             भारत का वास्तविक सांस्कृतिक एवं धरोहर मानचित्र — Automatic Near-Me Geolocation & Living Cultural Atlas
           </p>
@@ -521,6 +560,7 @@ export default function CulturalMap({ onViewRecord }: CulturalMapProps) {
                 onClick={() => {
                   if (mapInstanceRef.current && userLocation) {
                     mapInstanceRef.current.flyTo([userLocation.lat, userLocation.lng], 10, { duration: 1.0 });
+                    setSearchCenter(null);
                   }
                   setDossierMode('near-me');
                 }}

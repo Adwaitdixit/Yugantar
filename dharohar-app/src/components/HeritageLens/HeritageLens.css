@@ -110,7 +110,7 @@
 .preview-actions {
   display: flex;
   gap: 16px;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .btn-glow {
@@ -266,4 +266,89 @@
   .lens-tabs {
     flex-wrap: nowrap;
   }
+}
+
+/* ============================================================
+   LIGHT MODE OVERRIDES
+   ============================================================ */
+
+.light-mode .lens-container {
+  color: var(--text-primary);
+}
+
+.light-mode .lens-header h1 {
+  color: var(--text-primary);
+}
+
+.light-mode .lens-icon-main {
+  color: var(--primary-dark);
+}
+
+.light-mode .lens-upload-section {
+  background: var(--surface);
+  border-color: var(--border-medium);
+}
+
+.light-mode .lens-dropzone {
+  border-color: rgba(184, 134, 11, 0.4);
+  background: rgba(184, 134, 11, 0.02);
+}
+
+.light-mode .lens-dropzone:hover {
+  background: rgba(184, 134, 11, 0.05);
+  border-color: rgba(184, 134, 11, 0.6);
+}
+
+.light-mode .lens-drop-icon {
+  color: var(--primary-dark);
+}
+
+.light-mode .lens-btn-primary {
+  background: var(--primary-dark);
+  color: #FDFBF7;
+}
+
+.light-mode .lens-btn-primary:hover {
+  background: var(--primary);
+}
+
+.light-mode .lens-analysis-panel,
+.light-mode .lens-image-preview {
+  background: var(--surface-bright);
+  border-color: var(--border-medium);
+}
+
+.light-mode .pulse-ring {
+  border-color: rgba(184, 74, 40, 0.4);
+}
+
+.light-mode .lens-results {
+  background: var(--surface);
+  border-color: var(--border-medium);
+}
+
+.light-mode .result-icon {
+  color: var(--primary-dark);
+  background: rgba(184, 134, 11, 0.1);
+}
+
+.light-mode .lens-card-value {
+  color: var(--text-primary);
+}
+
+.light-mode .lens-tag {
+  background: rgba(184, 134, 11, 0.1);
+  color: var(--text-primary);
+  border-color: rgba(184, 134, 11, 0.3);
+}
+
+.light-mode .lens-action-btn {
+  background: var(--surface-bright);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+}
+
+.light-mode .lens-action-btn:hover {
+  background: var(--surface-dim);
+  border-color: var(--primary-dark);
 }
